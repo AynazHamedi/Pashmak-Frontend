@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
-function SignupForm({ onSubmit }) {
+function SignupForm() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    confirm_password:''
   });
 
   const handleChange = (e) => {
@@ -16,10 +16,69 @@ function SignupForm({ onSubmit }) {
     });
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordToggle = () => {
+    setShowPassword(!showPassword); 
+  };
+  
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleConfirmPasswordToggle = () => {
+    setShowConfirmPassword(!showConfirmPassword); 
+  };
+  
+  const [errors, setErrors] = useState({
+    username: [],
+    email: [],
+    password: [],
+    confirm_password: []
+  });
+  
+  const validateForm = () => {
+    const newErrors = {
+      username: [],
+      email: [],
+      password: [],
+      confirm_password: []
+    };
+  
+    if (!formData.username) {
+      newErrors.username.push('Username is required');
+    }
+    if (formData.username.length < 3) {
+      newErrors.username.push('Username must be at least 3 characters');
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!formData.email) {
+      newErrors.email.push('Email is required');
+    } else if (!emailPattern.test(formData.email)) {
+      newErrors.email.push('Invalid email address');
+    }
+  
+    if (!formData.password) {
+      newErrors.password.push('Password is required');
+    } else if (formData.password.length < 6) {
+      newErrors.password.push('Password must be at least 6 characters');
+    }
+  
+    if (formData.password !== formData.confirm_password) {
+      newErrors.confirm_password.push('Passwords do not match');
+    }
+  
+    setErrors(newErrors);
+  
+    return Object.values(newErrors).every((errorArray) => errorArray.length === 0);
+  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    if (validateForm()) {
+      console.log('Signup data submitted:', formData);
+    }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen w-screen bg-gray-200 bg-cover bg-center" style={{ backgroundImage: "url('images/Signup/background.png')" }}>
@@ -34,9 +93,17 @@ function SignupForm({ onSubmit }) {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              required
+              
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
+            {errors.username.length > 0 && (
+              <ul className="text-red-500 text-sm">
+              {errors.username.map((error, index) => (
+                <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
+
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email:</label>
@@ -46,21 +113,66 @@ function SignupForm({ onSubmit }) {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
+            {errors.email.length > 0 && (
+              <ul className="text-red-500 text-sm">
+              {errors.email.map((error, index) => (
+                <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="mb-6">
             <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Password:</label>
             <input
-              type="password"
+              type={showPassword ? "text":"password"}
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              required
+              
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
+            <button 
+              type="button" 
+              onClick={handlePasswordToggle} 
+              className="text-sm text-gray-500 mt-2 focus:outline-none">
+              {showPassword ? 'Hide' : 'Show'} Password
+            </button>
+            {errors.password.length > 0 && (
+              <ul className="text-red-500 text-sm">
+              {errors.password.map((error, index) => (
+                <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}            
+          </div>
+          <div className="mb-6">
+            <label htmlFor="confirm_password" className="block text-gray-700 font-bold mb-2">Confirm password:</label>
+            <input
+              type={showConfirmPassword ? "text":"password"}
+              id="confirm_password"
+              name="confirm_password"
+              value={formData.confirm_password}
+              onChange={handleChange}
+              
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+            <button 
+              type="button" 
+              onClick={handleConfirmPasswordToggle} 
+              className="text-sm text-gray-500 mt-2 focus:outline-none">
+              {showConfirmPassword ? 'Hide' : 'Show'} Confirm Password
+            </button>
+            {errors.confirm_password.length > 0 && (
+              <ul className="text-red-500 text-sm">
+              {errors.confirm_password.map((error, index) => (
+                <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
           </div>
           <button type="submit" className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Sign Up</button>
         </form>
@@ -68,9 +180,5 @@ function SignupForm({ onSubmit }) {
     </div>
   );
 }
-
-SignupForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
-};
 
 export default SignupForm;
