@@ -33,6 +33,7 @@ const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
       </form>
       <button onClick={handleForgetPasswordClick}>Forgot Password?</button>
     </div>
+    // Add a button to 'verification with code' step
   );
 };
 
