@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate(); 
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +16,7 @@ const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
   };
 
   const handleForgetPasswordClick = () => {
-    navigate('/change-password'); // رفتن به صفحه تغییر رمز
+    navigate("/change-password"); // رفتن به صفحه تغییر رمز
   };
 
   return (
@@ -38,8 +38,8 @@ const PasswordLogin = ({ handlePasswordLoginSuccess }) => {
 };
 
 PasswordLogin.propTypes = {
-    setLoginStep :  PropTypes.func.isRequired,
-    handlePasswordLoginSuccess: PropTypes.func.isRequired,
+  setLoginStep: PropTypes.func.isRequired,
+  handlePasswordLoginSuccess: PropTypes.func.isRequired,
 };
 
 export default PasswordLogin;

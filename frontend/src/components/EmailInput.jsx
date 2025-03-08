@@ -1,8 +1,8 @@
-import  { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const EmailInput = ({ handleEmailSubmit }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +23,6 @@ const EmailInput = ({ handleEmailSubmit }) => {
   );
 };
 EmailInput.propTypes = {
-    handleEmailSubmit: PropTypes.func.isRequired,
-  };
+  handleEmailSubmit: PropTypes.func.isRequired,
+};
 export default EmailInput;

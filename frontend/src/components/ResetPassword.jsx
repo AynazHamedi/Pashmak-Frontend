@@ -1,9 +1,9 @@
-import  { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const ResetPassword = ({ handleResetPasswordSuccess }) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -11,7 +11,7 @@ const ResetPassword = ({ handleResetPasswordSuccess }) => {
     // ارسال رمز به بک
     const isSuccess = true; // جواب بک
     if (isSuccess) {
-      handleResetPasswordSuccess(); 
+      handleResetPasswordSuccess();
     }
   };
 
@@ -41,7 +41,7 @@ const ResetPassword = ({ handleResetPasswordSuccess }) => {
 
 ResetPassword.propTypes = {
   handleResetPasswordSuccess: PropTypes.func.isRequired,
-  isFromForgetPassword: PropTypes.bool, 
+  isFromForgetPassword: PropTypes.bool,
 };
 
 export default ResetPassword;

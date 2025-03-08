@@ -1,29 +1,30 @@
-import  { useState } from 'react';
-import ResetPassword from '../components/ResetPassword'; 
+import { useState } from "react";
+import ResetPassword from "../components/ResetPassword";
 
 const ForgetPassword = () => {
-
-  const [email, setEmail] = useState('');
-  const [step, setStep] = useState('email'); // مراحل: 'email', 'ResetPassword'
+  const [email, setEmail] = useState("");
+  const [step, setStep] = useState("email"); // مراحل: 'email', 'ResetPassword'
 
   const handleEmailSubmit = (email) => {
     setEmail(email);
-    setStep('ResetPassword'); // به مرحله تغییر رمز عبور بروید
+    setStep("ResetPassword"); // به مرحله تغییر رمز عبور بروید
   };
 
   const handleResetPasswordSuccess = () => {
     // تغیی رمز اوکی بوده
     // کارای لازمو انجام بدیم
-    // مثلا ست کردن توکن و ...    
+    // مثلا ست کردن توکن و ...
   };
 
   return (
     <div>
-      {step === 'email' && (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleEmailSubmit(email);
-        }}>
+      {step === "email" && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleEmailSubmit(email);
+          }}
+        >
           <input
             type="email"
             value={email}
@@ -34,7 +35,7 @@ const ForgetPassword = () => {
           <button type="submit">Submit</button>
         </form>
       )}
-      {step === 'ResetPassword' && (
+      {step === "ResetPassword" && (
         <ResetPassword
           handleResetPasswordSuccess={handleResetPasswordSuccess}
         />

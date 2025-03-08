@@ -21,7 +21,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 apiClient.interceptors.response.use(
@@ -29,26 +29,25 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       console.log("توکن منقضی شده است، کاربر به صفحه ورود هدایت شد.");
-      localStorage.removeItem("jwtToken"); 
-      window.location.href = "/login"; 
+      localStorage.removeItem("jwtToken");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;
 
-
 const postRequest = async ({ url, data, queryParams }) => {
   const queryString = new URLSearchParams(queryParams).toString();
-  const fullUrl = queryString ? `${url}?${queryString}` : url; 
+  const fullUrl = queryString ? `${url}?${queryString}` : url;
 
-  const response = await apiClient.post(fullUrl, data); 
-  return response.data; 
+  const response = await apiClient.post(fullUrl, data);
+  return response.data;
 };
 
 export const usePostRequest = () => {
   return useMutation({
-    mutationFn: postRequest, 
+    mutationFn: postRequest,
   });
 };
