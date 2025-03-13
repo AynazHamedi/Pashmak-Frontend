@@ -1,58 +1,63 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PageTransition from "../components/PageTransition";
 import EmailInput from "../components/EmailInput";
 import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
-import { useNavigate } from "react-router-dom";
+import routes from "../routes/Routes";
+import { useLoginStep, useEmail } from "../stores/login";
 
 const Login = () => {
-  //Steps: 'Email', 'Verification', 'Password'
-  const [step, setStep] = useState("email");
-  const [email, setEmail] = useState("");
+  const { step, setStep } = useLoginStep();
+  const { setEmail } = useEmail();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailSubmit = (email) => {
-    // اینجا باید ای پی ای بک کال کنیم ببینیم ثبت نام شده یا نه
-    // البته اگه بک ارور دیگه ای نده موارد زیر ست میشه
-    const userExists = true; // نتیجه رو اینجا باید بزاریم
-    setUserExists(userExists);
+    // Request to Back to Find Out That User Was Going to Sign Up or Login
+    // Show in the case of Error
+    setUserExists(true); // Back Answer
     setEmail(email);
     setStep("verification");
   };
 
-  const handleLoginPasswordRedirect = () => {
-    setStep("password");
-  };
-
   const handleVerificationSuccess = () => {
+    // In both login and registration modes should set token and operations required
+    // Show in the case of Error
     if (userExists) {
-      // تایید با ایمیل انجام شده برای ورود موارد لازم
+      navigate(routes.home);
     } else {
-      // ثبتنام تایید شده
-      navigate("/complete-profile");
+      navigate(routes.completeProfile);
     }
   };
 
   const handlePasswordLoginSuccess = () => {
-    // ورود با رمز اوکی بوده کارای لازم انجام بشه
+    // Perform the operations required for entry
+    navigate(routes.home);
   };
 
   return (
-    <div>
-      {step === "email" && <EmailInput handleEmailSubmit={handleEmailSubmit} />}
-      {step === "verification" && (
-        <VerificationCode
-          email={email}
-          handleLoginPasswordRedirect={handleLoginPasswordRedirect}
-          handleVerificationSuccess={handleVerificationSuccess}
-          showPasswordLoginButton={userExists}
-        />
-      )}
-      {step === "password" && (
-        <PasswordLogin
-          handlePasswordLoginSuccess={handlePasswordLoginSuccess}
-        />
-      )}
+    <div
+      className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
+      style={{ backgroundImage: "url('/background.png')" }}
+    >
+      <PageTransition key={step}>
+        {step === "email" && (
+          <EmailInput handleEmailSubmit={handleEmailSubmit} />
+        )}
+        {step === "verification" && (
+          <VerificationCode
+            handleVerificationSuccess={handleVerificationSuccess}
+            userExists={userExists}
+          />
+        )}
+        {step === "password" && (
+          <PasswordLogin
+            handlePasswordLoginSuccess={handlePasswordLoginSuccess}
+            setUserExists={setUserExists}
+          />
+        )}
+      </PageTransition>
     </div>
   );
 };
