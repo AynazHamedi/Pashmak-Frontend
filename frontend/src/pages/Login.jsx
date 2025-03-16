@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Use the usePostRequest hook for email submission
-  const { mutate: submitEmail, isLoading } = usePostRequest();
+  const { mutate: submitEmail /*, isLoading*/ } = usePostRequest();
 
   const handleEmailSubmit = (email) => {
     setEmail(email); // Save the email in the store
@@ -36,14 +36,31 @@ const Login = () => {
       }
     );
   };
+  // Use the usePostRequest hook for email submission
+  const { mutate: submitOTP } = usePostRequest();
+
 
   const handleVerificationSuccess = () => {
-    // In both login and registration modes should set token and operations required
-    if (userExists) {
-      navigate(routes.home);
-    } else {
-      navigate(routes.completeProfile);
-    }
+
+    // Use the submitEmail mutation to post the email
+    submitOTP(
+      { url: "/VerifyOTP", data: { email } },
+      {
+        onSuccess: () => {
+          // In both login and registration modes should set token and operations required
+          if (userExists) {
+            navigate(routes.home);
+          } else {
+            navigate(routes.completeProfile);
+          }
+        },
+        onError: (error) => {
+          console.error("Error checking otp:", error);
+          alert("Error checking otp. Please try again.");
+        },
+      }
+    );
+
   };
 
   const handlePasswordLoginSuccess = () => {
