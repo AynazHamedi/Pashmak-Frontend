@@ -46,7 +46,8 @@ const VerificationCode = ({ handleVerificationSuccess, userExists }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (code.join("").length === 4) {
-      handleVerificationSuccess();
+      console.log("the otp is `" + code.join("") + "`")
+      handleVerificationSuccess(code.join(""));
     }
   };
   const handleBack = () => {
@@ -54,6 +55,9 @@ const VerificationCode = ({ handleVerificationSuccess, userExists }) => {
     setStep("email");
   };
   const handleClick = () => {
+    setCode(["", "", "", ""]);
+    const nextInput = document.getElementById(`input-0`);
+    nextInput?.focus();
     setTimeLeft(90);
     setResendDisabled(true);
   };

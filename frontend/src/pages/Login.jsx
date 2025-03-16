@@ -10,12 +10,12 @@ import { usePostRequest } from "../services/api"; // Import the usePostRequest h
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
-  const { setEmail } = useEmail();
+  const { email, setEmail } = useEmail(); // Ensure email is accessible
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
   // Use the usePostRequest hook for email submission
-  const { mutate: submitEmail /*, isLoading*/ } = usePostRequest();
+  const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
 
   const handleEmailSubmit = (email) => {
     setEmail(email); // Save the email in the store
@@ -25,7 +25,7 @@ const Login = () => {
       { url: "/send-otp", data: { email } },
       {
         onSuccess: (data) => {
-          // Assuming the API returns { exists: true/false }
+          console.log("API Response Data:", data);
           setUserExists(data.exists);
           setStep("verification"); // Move to the next step
         },
@@ -36,15 +36,16 @@ const Login = () => {
       }
     );
   };
-  // Use the usePostRequest hook for email submission
-  const { mutate: submitOTP } = usePostRequest();
 
+  // Use the usePostRequest hook for OTP submission
+  const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
-  const handleVerificationSuccess = () => {
+  const handleVerificationSuccess = (otp) => {
+    console.log("Submitting OTP:", { email, otp }); // Debugging
 
-    // Use the submitEmail mutation to post the email
+    // Use the submitOTP mutation to post the OTP
     submitOTP(
-      { url: "/VerifyOTP", data: { email } },
+      { url: "/verify-otp", data: { email : email, otp: otp } },
       {
         onSuccess: () => {
           // In both login and registration modes should set token and operations required
@@ -55,12 +56,11 @@ const Login = () => {
           }
         },
         onError: (error) => {
-          console.error("Error checking otp:", error);
-          alert("Error checking otp. Please try again.");
+          console.error("Error checking OTP:", error);
+          alert("Error checking OTP. Please try again.");
         },
       }
     );
-
   };
 
   const handlePasswordLoginSuccess = () => {
@@ -75,7 +75,7 @@ const Login = () => {
     >
       <PageTransition key={step}>
         {step === "email" && (
-          <EmailInput handleEmailSubmit={handleEmailSubmit} isLoading={isLoading} />
+          <EmailInput handleEmailSubmit={handleEmailSubmit} isLoading={isSubmitting} />
         )}
         {step === "verification" && (
           <VerificationCode
