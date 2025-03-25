@@ -7,33 +7,29 @@ import PasswordLogin from "../components/PasswordLogin";
 import routes from "../routes/Routes";
 import { useLoginStep, useEmail } from "../stores/login";
 import { toast } from "react-toastify";
-import { usePostRequest } from "../services/api"; // Import the usePostRequest hook from your API configuration
+import { usePostRequest } from "../services/api";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
-  const { email, setEmail } = useEmail(); // Ensure email is accessible
+  const { email, setEmail } = useEmail(); 
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
-  // Use the usePostRequest hook for email submission
   const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
 
   const handleEmailSubmit = (email) => {
-    setEmail(email); // Save the email in the store
+    setEmail(email);
 
-    // Use the submitEmail mutation to post the email
     submitEmail(
       { url: "/auth/send-otp", data: { email } },
       {
         onSuccess: (data) => {
-          // console.log("API Response Data:", data);
           setUserExists(data.exists);
-          setStep("verification"); // Move to the next step
+          setStep("verification");
           toast.success("کد ورود به ایمیل شما ارسال شد.");
         },
         onError: (error) => {
           console.error("Error checking email:", error);
-          // toast.error("Error checking email. Please try again.");
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
@@ -47,8 +43,8 @@ const Login = () => {
   const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
   const handleVerificationSuccess = (otp) => {
-    console.log("Submitting OTP:", { email, otp }); // Debugging
-
+    console.log("Submitting OTP:", { email, otp });
+    
     submitOTP(
       { url: "/auth/login/otp", data: { email : email, otp: otp } },
       {
@@ -65,11 +61,6 @@ const Login = () => {
             console.error("Authorization header missing or invalid");
           }
 
-          // // localStorage.setItem("test", Cookies.get('.Tunnels.Relay.WebForwarding.Cookies'));
-          // localStorage.setItem("jwtToken", localStorage.get('jwtToken'));
-          // console.log("jwt : ", localStorage.get('jwtToken'));
-          // // console.log("test Token : ", Cookies.get('.Tunnels.Relay.WebForwarding.Cookies'));
-          // console.log("proccess ended");
           console.log(response);
           console.log(response.headers);
 
@@ -84,7 +75,7 @@ const Login = () => {
         },
         onError: (error) => {
           console.error("Error checking OTP:", error);
-          // alert("Error checking OTP. Please try again.");
+
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
