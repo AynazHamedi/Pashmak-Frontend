@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { useEmail, useLoginStep } from "../stores/login";
 
-const VerificationCode = ({ handleVerificationSuccess, userExists }) => {
+const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userExists, isLoading }) => {
   const [code, setCode] = useState(["", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(90);
   const [resendDisabled, setResendDisabled] = useState(true);
   const { setStep } = useLoginStep();
-  const { email } = useEmail();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -55,6 +54,7 @@ const VerificationCode = ({ handleVerificationSuccess, userExists }) => {
     setStep("email");
   };
   const handleClick = () => {
+    handleEmailSubmit("");
     setCode(["", "", "", ""]);
     const nextInput = document.getElementById(`input-0`);
     nextInput?.focus();

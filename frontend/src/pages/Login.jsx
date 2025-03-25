@@ -18,7 +18,9 @@ const Login = () => {
   const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
 
   const handleEmailSubmit = (email) => {
-    setEmail(email);
+    if(email !== "") {
+      setEmail(email);
+    }
 
     submitEmail(
       { url: "/auth/send-otp", data: { email } },
