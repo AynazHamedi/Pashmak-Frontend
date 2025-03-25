@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
-import { useEmail, useLoginStep } from "../stores/login";
+import { useLoginStep } from "../stores/login";
 
-const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userExists, isLoading }) => {
+  const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userExists, isLoading }) => {
   const [code, setCode] = useState(["", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(90);
   const [resendDisabled, setResendDisabled] = useState(true);
@@ -42,13 +42,20 @@ const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userEx
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     if (code.join("").length === 4) {
-      console.log("the otp is `" + code.join("") + "`")
       handleVerificationSuccess(code.join(""));
     }
-  };
+  }, [code]);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (code.join("").length === 4) {
+  //     console.log("the otp is `" + code.join("") + "`")
+  //     handleVerificationSuccess(code.join(""));
+  //   }
+  // };
+
   const handleBack = () => {
     navigate(routes.login);
     setStep("email");
@@ -64,7 +71,7 @@ const VerificationCode = ({ handleEmailSubmit, handleVerificationSuccess, userEx
   return (
     <div>
       <form
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         className="w-full h-full rounded-lg bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
         <div className="flex justify-between items-center mb-6">
