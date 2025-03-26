@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
-import { useLoginStep } from "../stores/login";
+import { useEmail, useLoginStep } from "../stores/login";
 
 const VerificationCode = ({
   handleEmailSubmit,
@@ -14,6 +14,7 @@ const VerificationCode = ({
   const [timeLeft, setTimeLeft] = useState(90);
   const [resendDisabled, setResendDisabled] = useState(true);
   const { setStep } = useLoginStep();
+  const { email } = useEmail();
 
   const navigate = useNavigate();
   useEffect(() => {

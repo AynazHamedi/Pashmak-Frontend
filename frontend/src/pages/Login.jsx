@@ -53,14 +53,15 @@ const Login = () => {
         onSuccess: (response) => {
           console.log("proccess running ...");
 
-          const authHeader = response.headers["Authorization"];
-          if (authHeader && authHeader.startsWith("Bearer ")) {
-            const token = authHeader.split(" ")[1];
-            localStorage.setItem("jwtToken", token);
-            console.log("JWT Token:", token);
-          } else {
-            console.error("Authorization header missing or invalid");
-          }
+          // const authHeader = response.headers["Authorization"];
+          // if (authHeader && authHeader.startsWith("Bearer ")) {
+          //   const token = authHeader.split(" ")[1];
+          //   localStorage.setItem("jwtToken", token);
+          //   console.log("JWT Token:", token);
+          // } else {
+          //   console.error("Authorization header missing or invalid");
+          // }
+          console.log(document.cookie);
 
           console.log(response);
           console.log(response.headers);
@@ -79,7 +80,7 @@ const Login = () => {
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
           } else {
-            console.log("cuse : ", error.cause);
+            console.log("cause : ", error.cause);
             console.log("error : ", error);
             toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
           }
