@@ -67,7 +67,7 @@ const Login = () => {
           console.log(response.headers);
 
           if (userExists) {
-            navigate(routes.home);
+            navigate(routes.map);
             toast.success("خوش آمدید.");
           } else {
             navigate(routes.completeProfile);
@@ -90,7 +90,7 @@ const Login = () => {
   };
 
   const handlePasswordLoginSuccess = () => {
-    navigate(routes.home);
+    navigate(routes.map);
   };
 
   return (
