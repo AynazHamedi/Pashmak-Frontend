@@ -86,7 +86,7 @@ const VerificationCode = ({
     <div>
       <form
         // onSubmit={handleSubmit}
-        className="w-full h-full rounded-lg bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />

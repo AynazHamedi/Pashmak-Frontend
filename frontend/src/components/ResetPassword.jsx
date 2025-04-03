@@ -79,7 +79,7 @@ const ResetPassword = ({ handleChangePassword }) => {
             handleChangePassword();
           }
         }}
-        className="w-full h-full rounded-lg bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
+        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
       >
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
@@ -104,7 +104,7 @@ const ResetPassword = ({ handleChangePassword }) => {
             onFocus={() => setPasswordTouched(true)}
             onBlur={() => setPasswordTouched(false)}
             placeholder="رمز عبور جدید را وارد کنید"
-            className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
+            className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 password === ""
                   ? "border-stone-300"
@@ -147,7 +147,7 @@ const ResetPassword = ({ handleChangePassword }) => {
             onFocus={() => setConfirmPasswordTouched(true)}
             onBlur={() => setConfirmPasswordTouched(false)}
             placeholder="تکرار رمز عبور جدید"
-            className={`mt-6 w-full rounded-md border-[3px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
+            className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 confirmPassword === ""
                   ? "border-stone-300"
