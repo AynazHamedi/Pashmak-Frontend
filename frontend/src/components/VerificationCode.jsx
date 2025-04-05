@@ -59,16 +59,9 @@ const VerificationCode = ({
   useEffect(() => {
     if (code.join("").length === 4) {
       handleVerificationSuccess(code.join(""));
+      navigate(routes.map)
     }
-  }, [code, handleVerificationSuccess]);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (code.join("").length === 4) {
-  //     console.log("the otp is `" + code.join("") + "`")
-  //     handleVerificationSuccess(code.join(""));
-  //   }
-  // };
+  }, [code, handleVerificationSuccess, navigate]);
 
   const handleBack = () => {
     navigate(routes.login);
