@@ -5,8 +5,8 @@ import routes from "../routes/Routes";
 import { useEmail, useLoginStep } from "../stores/login";
 
 const VerificationCode = ({
-  handleEmailSubmit,
   handleVerificationSuccess,
+  handleEmailSubmit,
   userExists,
   isLoading,
 }) => {
@@ -37,9 +37,28 @@ const VerificationCode = ({
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
+    if (newCode.join("").length === 4) {
+      handleVerificationSuccess(newCode.join(""));
+    }
 
     if (value && index < code.length - 1) {
       document.getElementById(`input-${index + 1}`)?.focus();
+    }
+  };
+
+  const handleBackspace = (e, index) => {
+    if (e.key !== "Backspace") return;
+
+    const newCode = [...code];
+
+    if (code[index]) {
+      newCode[index] = "";
+      setCode(newCode);
+    } else if (index > 0) {
+      newCode[index - 1] = "";
+      setCode(newCode);
+      const prevInput = document.getElementById(`input-${index - 1}`);
+      prevInput?.focus();
     }
   };
 
@@ -51,36 +70,29 @@ const VerificationCode = ({
       .slice(0, 4);
 
     if (pastedText.length === 4) {
-      setCode(pastedText.split(""));
+      setCode([...pastedText.split("")]);
       document.getElementById(`input-3`)?.focus();
+      handleVerificationSuccess(pastedText);
     }
   };
-
-  useEffect(() => {
-    if (code.join("").length === 4) {
-      handleVerificationSuccess(code.join(""));
-      navigate(routes.map)
-    }
-  }, [code, handleVerificationSuccess, navigate]);
 
   const handleBack = () => {
     navigate(routes.login);
     setStep("email");
   };
-  const handleClick = () => {
-    handleEmailSubmit("");
+
+  const handleResendCode = (e) => {
+    e.preventDefault();
+    handleEmailSubmit(email);
     setCode(["", "", "", ""]);
-    const nextInput = document.getElementById(`input-0`);
-    nextInput?.focus();
+    document.getElementById(`input-0`)?.focus();
     setTimeLeft(90);
     setResendDisabled(true);
   };
+
   return (
     <div>
-      <form
-        // onSubmit={handleSubmit}
-        className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
-      >
+      <form className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]">
         <div className="flex justify-between items-center mb-6">
           <img src="/logo.svg" alt="Logo" className="w-14 h-auto" />
         </div>
@@ -105,6 +117,7 @@ const VerificationCode = ({
               maxLength="1"
               value={digit}
               onChange={(e) => handleInputChange(index, e.target.value)}
+              onKeyDown={(e) => handleBackspace(e, index)}
               onPaste={handlePaste}
               className="w-14 h-14 border-[2px] text-center text-2xl border-primary bg-white text-secondary rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
@@ -116,7 +129,7 @@ const VerificationCode = ({
         </p>
         <button
           type="button"
-          onClick={handleClick}
+          onClick={handleResendCode}
           disabled={resendDisabled}
           className={`w-full text-secondary bg-white text-lg border-none mt-4  ${resendDisabled ? "opacity-50" : "hover:text-primary"}`}
         >
@@ -155,10 +168,4 @@ const VerificationCode = ({
     </div>
   );
 };
-
-VerificationCode.propTypes = {
-  handleVerificationSuccess: PropTypes.func.isRequired,
-  userExists: PropTypes.bool.isRequired,
-};
-
 export default VerificationCode;

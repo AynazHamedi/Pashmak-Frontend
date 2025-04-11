@@ -12,10 +12,11 @@ const PasswordLogin = ({ handlePasswordLoginSuccess, setUserExists }) => {
   const { setStep } = useLoginStep();
   const handleSubmit = (e) => {
     e.preventDefault();
-    handlePasswordLoginSuccess();
+    handlePasswordLoginSuccess(password);
   };
 
   const handleForgetPasswordClick = () => {
+    setStep("verification");
     navigate(routes.changePassword);
   };
 

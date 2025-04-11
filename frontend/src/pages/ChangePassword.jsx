@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PageTransition from "../components/PageTransition";
+import EmailInput from "../components/EmailInput";
 import VerificationCode from "../components/VerificationCode";
 import ResetPassword from "../components/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
+import { toast } from "react-toastify";
 import { useLoginStep, useEmail } from "../stores/login";
 
-const ForgetPassword = () => {
-  const [stepPassword, setStepPassword] = useState("verification");
+import { usePostRequest } from "../services/api";
+
+const ChangePassword = () => {
+  const { step, setStep } = useLoginStep();
   const navigate = useNavigate();
-  const { email } = useEmail();
-  const { setStep } = useLoginStep();
+  const { email, setEmail } = useEmail();
 
   useEffect(() => {
     if (!email) {
@@ -18,32 +21,84 @@ const ForgetPassword = () => {
     }
   }, [email, navigate]);
 
-  const handleVerificationSuccess = () => {
-    // Set token
-    // Show in the Case of Error
-    setStepPassword("ResetPassword");
-  };
+  const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
-  const handleChangePassword = () => {
+  const handleVerificationSuccess = useCallback(
+    (otp) => {
+      console.log("Submitting OTP in change password:", { email, otp });
+
+      submitOTP(
+        {
+          url: "/auth/password/forget/verify",
+          data: { email: email, otp: otp },
+        },
+        {
+          onSuccess: () => {
+            setStep("ResetPassword");
+            toast.success("ایمیل ما تایید شد. میتوانید رمز خود را تغییر دهید.");
+          },
+          onError: (error) => {
+            console.error("Error checking OTP:", error);
+
+            if (error.response?.data?.message) {
+              toast.error(error.response.data.message);
+            } else {
+              console.log("cause : ", error.cause);
+              console.log("error : ", error);
+              toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+            }
+          },
+        },
+      );
+    },
+    [email, setStep, submitOTP],
+  );
+
+  const { mutate: submitPassword, isLoading: isSubmittingPassword } = usePostRequest();
+
+  const handleChangePassword = (password) => {
     // Patch a password to change the password from the back side
-    navigate(routes.map);
+    submitPassword(
+      {
+        url: "/auth/password/forget/reset",
+        data: { email: email, password: password },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          toast.success("رمز با موفقیت تغییر کرد.");
+          navigate(routes.map);
+        },
+        onError: (error) => {
+          console.error("خطا در ورود با رمز:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
+
+    navigate(routes.home);
   };
 
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{  backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)" }}
+      style={{
+        backgroundImage: "linear-gradient(120deg, #5E2B7A, #85A4E2, #C77DF3)",
+      }}
     >
-      <PageTransition key={stepPassword}>
-        {stepPassword === "verification" && (
+      <PageTransition key={step}>
+        {step === "verification" && (
           <VerificationCode
-            email={email}
             handleVerificationSuccess={handleVerificationSuccess}
-            setStep={setStep}
             userExists={true}
+            isLoading={isSubmittingOTP}
           />
         )}
-        {stepPassword === "ResetPassword" && (
+        {step === "ResetPassword" && (
           <ResetPassword handleChangePassword={handleChangePassword} />
         )}
       </PageTransition>
@@ -51,4 +106,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ChangePassword;

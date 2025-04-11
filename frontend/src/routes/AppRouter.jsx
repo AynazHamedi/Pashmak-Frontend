@@ -14,7 +14,6 @@ function AppRouter() {
       <Route path={routes.completeProfile} element={<CompleteProfile />} />
       <Route path={routes.map} element={<Map />} />
       <Route path={routes.profile} element={<Profile />} />
-
     </Routes>
   );
 }

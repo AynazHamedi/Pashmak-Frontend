@@ -4,10 +4,11 @@ import PageTransition from "../components/PageTransition";
 import EmailInput from "../components/EmailInput";
 import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
+import Signup from "../components/Signup";
 import routes from "../routes/Routes";
 import { useLoginStep, useEmail } from "../stores/login";
 import { toast } from "react-toastify";
-import { usePostRequest } from "../services/api";
+import { usePostRequest, usePatchRequest } from "../services/api";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
@@ -22,10 +23,12 @@ const Login = () => {
       setEmail(email);
     }
     submitEmail(
-      { url: "/auth/send-otp", data: { email } },
+      { url: "/auth/otp/send", data: { email } },
       {
         onSuccess: (data) => {
-          setUserExists(data.exists);
+          setUserExists(data.userExists);
+          console.log("Response userExists:", data.userExists);
+          console.log("State userExists:", userExists);
           setStep("verification");
           toast.success("کد ورود به ایمیل شما ارسال شد.");
         },
@@ -47,29 +50,14 @@ const Login = () => {
     console.log("Submitting OTP:", { email, otp });
 
     submitOTP(
-      { url: "/auth/login/otp", data: { email: email, otp: otp } },
+      { url: "/auth/otp/verify", data: { email: email, otp: otp } },
       {
         onSuccess: (response) => {
-          console.log("proccess running ...");
-
-          // const authHeader = response.headers["Authorization"];
-          // if (authHeader && authHeader.startsWith("Bearer ")) {
-          //   const token = authHeader.split(" ")[1];
-          //   localStorage.setItem("jwtToken", token);
-          //   console.log("JWT Token:", token);
-          // } else {
-          //   console.error("Authorization header missing or invalid");
-          // }
-          console.log(document.cookie);
-
-          console.log(response);
-          console.log(response.headers);
-
           if (userExists) {
             navigate(routes.map);
             toast.success("خوش آمدید.");
           } else {
-            navigate(routes.completeProfile);
+            setStep("signup");
             toast.success("ورود موفقیت آمیز بود. پروفایل خود را تکمیل کنید.");
           }
         },
@@ -81,6 +69,38 @@ const Login = () => {
           } else {
             console.log("cause : ", error.cause);
             console.log("error : ", error);
+            toast.error("ورود موفقیت آمیز نبود. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
+  };
+
+  const { mutate: submitInfo, isLoading: isSubmittingInfo } = usePatchRequest();
+
+  const handleSignup = (firstname, lastname, password) => {
+    submitInfo(
+      {
+        url: "/auth/signup",
+        data: {
+          firstname: firstname,
+          lastname: lastname,
+          password: password,
+          passwordConfirm: password,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          setUserExists(true);
+          toast.success("تغییرات حساب کاربری شما با موفقیت اعمال شد✅");
+          navigate(routes.map);
+        },
+        onError: (error) => {
+          console.error("خطا در تکمیل حساب کاربری:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
             toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
           }
         },
@@ -88,8 +108,29 @@ const Login = () => {
     );
   };
 
-  const handlePasswordLoginSuccess = () => {
-    navigate(routes.map);
+  const { mutate: submitPassword, isLoading: isSubmittingPassword } =
+    usePostRequest();
+
+  const handlePasswordLoginSuccess = (password) => {
+    submitPassword(
+      { url: "/auth/password", data: { email: email, password: password } },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          setUserExists(true);
+          toast.success("با موفقیت وارد شدید.");
+          navigate(routes.map);
+        },
+        onError: (error) => {
+          console.error("خطا در ورود با رمز:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
   };
 
   return (
@@ -108,8 +149,8 @@ const Login = () => {
         )}
         {step === "verification" && (
           <VerificationCode
-            handleEmailSubmit={handleEmailSubmit}
             handleVerificationSuccess={handleVerificationSuccess}
+            handleEmailSubmit={handleEmailSubmit}
             userExists={userExists}
             isLoading={isSubmittingOTP}
           />
@@ -120,6 +161,7 @@ const Login = () => {
             setUserExists={setUserExists}
           />
         )}
+        {step === "signup" && <Signup handleSignup={handleSignup} />}
       </PageTransition>
     </div>
   );

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useEmail, useLoginStep } from "../stores/login";
+
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 const EmailInput = ({ handleEmailSubmit, isLoading }) => {
-  const [email, setEmail] = useState("");
+  const { email, setEmail } = useEmail();
   const [isValidEmail, setIsValidEmail] = useState(false);
 
   const handleSubmit = (e) => {
@@ -40,9 +42,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
         <h2 className="mt-12 mb-2 text-right font-Vazir text-5xl text-primary">
           ورود
         </h2>
-        <p className="mb-6 text-right font-Vazir text-3xl text-muted">
-          ...سفرتو شروع کن
-        </p>
+        <p className="mb-6 text-right font-Vazir text-3xl text-muted">...سفرتو شروع کن</p>
         <div className="mb-4">
           <input
             type="email"
@@ -50,7 +50,6 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
             onChange={handleEmailChange}
             dir="rtl"
             placeholder="ایمیل خود را وارد کنید"
-            // یا کلا خاکستری باشه و آبی بشه با focus یا یا اینکه با درست غلط بودنش سبز و قرمز شه
             className={`mt-6 w-full rounded-md border-[2px] bg-white px-4 py-2 text-secondary placeholder:text-right focus:outline-none p-10
               ${
                 email === ""
@@ -97,5 +96,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
 
 EmailInput.propTypes = {
   handleEmailSubmit: PropTypes.func.isRequired,
+  enteredEmail: PropTypes.string.isRequired,
+  msg: PropTypes.string.isRequired,
 };
 export default EmailInput;

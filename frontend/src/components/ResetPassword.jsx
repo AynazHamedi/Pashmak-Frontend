@@ -15,6 +15,18 @@ const ResetPassword = ({ handleChangePassword }) => {
   const [passwordErrors, setPasswordErrors] = useState({});
   const navigate = useNavigate();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!passwordError && !confirmPasswordError) {
+      handleChangePassword(password);
+    }
+  };
+
+  // َASK
+  const handleGoBack = () => {
+    navigate(routes.home);
+  };
+
   const validatePassword = (password) => {
     const minLength = 8;
     const hasUpperCase = /[A-Z]/.test(password);
@@ -76,7 +88,7 @@ const ResetPassword = ({ handleChangePassword }) => {
         onSubmit={(e) => {
           e.preventDefault();
           if (!passwordError && !confirmPasswordError) {
-            handleChangePassword();
+            handleSubmit(e);
           }
         }}
         className="w-full h-full rounded-[24px] bg-white p-8 shadow-lg lg:h-[584px] lg:w-[474px]"
