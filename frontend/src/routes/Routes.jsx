@@ -6,6 +6,7 @@ const routes = {
   changePassword: "/change-password",
   completeProfile: "/complete-profile",
   profile: "/profile",
+  notfound: "*",
 };
 
 export default routes;

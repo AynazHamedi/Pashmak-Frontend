@@ -5,6 +5,7 @@ import ChangePassword from "../pages/ChangePassword";
 import CompleteProfile from "../pages/CompleteProfile";
 import Profile from "../pages/Profile";
 import MapLayout from "../pages/MapLayout";
+import NotFound from "../pages/NotFound";
 
 function AppRouter() {
   return (
@@ -18,6 +19,7 @@ function AppRouter() {
         <Route path={routes.search} element={<></>} />
         <Route path={routes.place} element={<></>} />
       </Route>
+      <Route path={routes.notfound} element={<NotFound />} />
     </Routes>
   );
 }
