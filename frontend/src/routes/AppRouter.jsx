@@ -6,20 +6,24 @@ import CompleteProfile from "../pages/CompleteProfile";
 import Profile from "../pages/Profile";
 import MapLayout from "../pages/MapLayout";
 import NotFound from "../pages/NotFound";
-
+import ProtectedLayout from "./ProtectedLayout";
 function AppRouter() {
   return (
     <Routes>
       <Route path={routes.login} element={<Login />} />
       <Route path={routes.changePassword} element={<ChangePassword />} />
       <Route path={routes.completeProfile} element={<CompleteProfile />} />
-      <Route path={routes.profile} element={<Profile />} />
+      <Route path={routes.notfound} element={<NotFound />} />
       <Route element={<MapLayout />}>
         <Route path={routes.map} element={<></>} />
         <Route path={routes.search} element={<></>} />
         <Route path={routes.place} element={<></>} />
       </Route>
-      <Route path={routes.notfound} element={<NotFound />} />
+      {/* Protected Route */}
+      <Route element={<ProtectedLayout />}>
+        <Route path={routes.profile} element={<Profile />} />
+      </Route>
+
     </Routes>
   );
 }
