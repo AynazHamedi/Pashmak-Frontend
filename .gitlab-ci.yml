@@ -1,9 +1,0 @@
-workflow:
-  rules:
-    - when: always
-
-dummy_job:
-  script:
-    - echo "This job should never run"
-  rules:
-    - when: never
