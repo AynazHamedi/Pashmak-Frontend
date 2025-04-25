@@ -29,7 +29,7 @@ const LocateButton = ({ setUserLocation }) => {
         <img
           src="/map_wave.svg"
           alt="locate"
-          className="w-16 h-16 transition-transform duration-300 ease-in-out group-hover:scale-125 group-hover:drop-shadow-[0_0_10px_rgba(0,123,255,0.8)]"
+          className="w-16 h-16 transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:drop-shadow-lg"
         />
       </div>
     </div>

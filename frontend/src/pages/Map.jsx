@@ -17,7 +17,7 @@ const Map = () => {
   const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
     usePostRequest();
   const handleFetchInitialTags = async () => {
-    return ["رستوران", "کافه", "پارک", "هتل", "موزه", "سینما", "تئاتر"];
+    return ["عطاری", "پمپ بنزین", "بستنی فروشی" ,"رستوران", "کافه", "پارک", "هتل", "موزه", "سینما", "تئاتر"];
     // return new Promise((resolve, reject) => {
     //   fetchInitialTags(
     //     { url: "/api/tags" },
