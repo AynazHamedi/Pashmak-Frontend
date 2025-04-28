@@ -1,8 +1,21 @@
 import React, { useState } from "react";
 import StarRating from "./StarRating";
 import { useNavigate } from "react-router-dom";
+import SharePopup from "./SharePopUp";
 
-const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rating, reviews, address, weeklySchedule, phone, links, hasSearch }) => {
+const PlaceInfoContainer = ({
+  expendSearch,
+  setExpendSearch,
+  imageUrl,
+  name,
+  rating,
+  reviews,
+  address,
+  weeklySchedule,
+  phone,
+  links,
+  hasSearch,
+}) => {
   // Default values
   imageUrl = "/resturant.jpg";
   name = "نام رستوران";
@@ -14,6 +27,7 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
 
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
 
@@ -45,7 +59,6 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
     return now >= start && now <= end;
   })();
 
-  
   // Render tabs
   const renderTabs = () => {
     return tabs.map((tab, index) => (
@@ -96,18 +109,14 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
           alt="close"
           className="absolute top-1 right-1 w-8 h-8 cursor-pointer"
           onClick={() => {
-            if(hasSearch){
-              if(!expendSearch)
-              {
+            if (hasSearch) {
+              if (!expendSearch) {
                 setExpendSearch(true);
                 // navigate("/map/search");
+              } else {
+                navigate("/map/search");
               }
-              else{
-                navigate("/map/search")
-              }
-            }
-            else
-              navigate("/map"); // Replace with your navigation logic
+            } else navigate("/map"); // Replace with your navigation logic
           }} // Replace with your close logic
         />
       </div>
@@ -137,13 +146,31 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
             <img src="/direction.svg" alt="route" className="w-10 h-10" />
             <img src="/save.svg" alt="save" className="w-10 h-10" />
             <img src="/call.svg" alt="call" className="w-10 h-10" />
-            <img src="/share.svg" alt="share" className="w-10 h-10" />
+            <img
+              src="/share.svg"
+              alt="share"
+              className="w-10 h-10 cursor-pointer"
+              onClick={() => setIsShareOpen(true)}
+            />
           </div>
+
+          {isShareOpen && (
+            <SharePopup
+              shareUrl={links}
+              placeName={name}
+              placeAddress={address}
+              onClose={() => setIsShareOpen(false)}
+            />
+          )}
 
           {/* Section 5: Address, Time, Phone, Links */}
           <div className="p-4 border-b border-gray-300 text-xs">
             <div className="flex">
-              <img src="/Map Point.svg" alt="location" className="w-5 h-5 m-2" />
+              <img
+                src="/Map Point.svg"
+                alt="location"
+                className="w-5 h-5 m-2"
+              />
               <p className="text-xs text-gray-600 mt-2">{address}</p>
             </div>
 
@@ -171,11 +198,7 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
                   }`}
                   onClick={() => setIsTimeExpanded(!isTimeExpanded)}
                 />
-                <img
-                  src="/Add Square.svg"
-                  alt="link"
-                  className="w-5 h-5 m-2"
-                />
+                <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
               </div>
             </div>
 
@@ -211,7 +234,9 @@ const PlaceInfoContainer = ({ expendSearch,setExpendSearch, imageUrl, name, rati
 
           {/* Section 6: Comment Button */}
           <div className="flex flex-col justify-center items-center gap-4 p-4">
-            <p className="text-sm text-gray-600">نظر خود را با ما به اشتراک بگذارید</p>
+            <p className="text-sm text-gray-600">
+              نظر خود را با ما به اشتراک بگذارید
+            </p>
             <button className="w-[100px] py-1 bg-white border border-purple-500 text-purple-500 text-sm rounded-lg focus:outline-none focus:border-purple-500">
               ثبت نظر
             </button>
