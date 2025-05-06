@@ -25,7 +25,7 @@ const SearchResults = ({ setExpendSearch, expendSearch }) => {
 
     fetchResults();
   }, [setExpendSearch]);
-  
+
   const toggleSearchPanel = () => {
     setExpendSearch(!expendSearch);
   };

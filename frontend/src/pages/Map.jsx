@@ -5,7 +5,7 @@ import LocateButton from "../components/LocateButton";
 import { usePostRequest } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const Map = ({expendSearch}) => {
+const Map = ({ expendSearch }) => {
   const [userLocation, setUserLocation] = useState(null);
 
   const [staticPoints, setStaticPoints] = useState([

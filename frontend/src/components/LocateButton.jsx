@@ -1,5 +1,7 @@
 import React from "react";
 import { useFocus } from "../stores/map";
+import { toast } from "react-toastify";
+
 const LocateButton = ({ setUserLocation }) => {
   const { focus, setFocus } = useFocus();
   const handleLocate = () => {
@@ -7,21 +9,20 @@ const LocateButton = ({ setUserLocation }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation({latitude, longitude});
+          setUserLocation({ latitude, longitude });
           setFocus(true);
         },
         (error) => {
-          console.error("Error getting location:", error);
-          alert("Unable to access your location.");
+          toast.error("موقعیت یافت نشد");
         },
         {
-          enableHighAccuracy: true, 
-          timeout: 10000, 
-          maximumAge: 0, // Prevent using cached location
-        }
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 1000,
+        },
       );
     } else {
-      alert("Your browser does not support geolocation.");
+      toast.error("موقعیت یافت نشد");
     }
   };
 
