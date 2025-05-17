@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import StarRating from "./StarRating";
 import { useNavigate } from "react-router-dom";
 import CommentsList from "./CommentsList";
 import { HandPills } from "solar-icon-set";
 import SharePopup from "./SharePopUp";
-
+import { Helmet } from "react-helmet";
 const PlaceInfoContainer = ({
   expendSearch,
   setExpendSearch,
@@ -27,11 +27,10 @@ const PlaceInfoContainer = ({
   phone = "شماره تماس: 1234567890";
   links = "https://example.com";
 
-  
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
-  const [showCommentForm,setShowCommentForm]=useState(false);
-  
+  const [showCommentForm, setShowCommentForm] = useState(false);
+
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
@@ -64,12 +63,11 @@ const PlaceInfoContainer = ({
     return now >= start && now <= end;
   })();
 
-  const handleSubmitCommentButton =()=>{
-    setActiveTab("نظرات")
-    setShowCommentForm(true)
-  }
+  const handleSubmitCommentButton = () => {
+    setActiveTab("نظرات");
+    setShowCommentForm(true);
+  };
 
-  
   // Render tabs
   const renderTabs = () => {
     return tabs.map((tab, index) => (
@@ -85,9 +83,8 @@ const PlaceInfoContainer = ({
         }}
         onClick={() => {
           setActiveTab(tab);
-          if(tab!=="نظرات")
-          {
-            setShowCommentForm(false)
+          if (tab !== "نظرات") {
+            setShowCommentForm(false);
           }
           document.getElementById(`section-${index}`).scrollIntoView({
             behavior: "smooth",
@@ -116,50 +113,52 @@ const PlaceInfoContainer = ({
   const navigate = useNavigate();
   return (
     <>
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
       <div className="flex flex-col justify-center items-center sticky top-0 z-10 w-full">
         {/* Section 1: Image */}
         <div className="w-full h-1/3">
-          <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-full object-cover"
+          />
           <img
             src="/closeWhiteBg.svg" // Replace with the path to your close icon
             alt="close"
             className="absolute top-1 right-1 w-8 h-8 cursor-pointer"
             onClick={() => {
-              if(hasSearch){
-                if(!expendSearch)
-                {
+              if (hasSearch) {
+                if (!expendSearch) {
                   setExpendSearch(true);
                   // navigate("/map/search");
+                } else {
+                  navigate("/map/search");
                 }
-                else{
-                  navigate("/map/search")
-                }
-              }
-              else
-                navigate("/map"); // Replace with your navigation logic
+              } else navigate("/map"); // Replace with your navigation logic
             }} // Replace with your close logic
           />
         </div>
-        
-        <div className="flex flex-row items-center bg-white justify-start w-full">
 
+        <div className="flex flex-row items-center bg-white justify-start w-full">
           {/* Section 2: Name and Rating */}
           <div className="p-4 bg-white w-full">
             <h2 className="text-xl font-sans-bold text-black">{name}</h2>
             <StarRating rating={rating} reviews={reviews} />
           </div>
-          
+
           {/* submit comment button */}
           <div className="flex flex-col justify-center items-cente gap-4 p-4 h-full">
-          <button className="w-[100px] py-1 bg-white border border-purple-500
+            <button
+              className="w-[100px] py-1 bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500"
               onClick={handleSubmitCommentButton}
-          >
+            >
               ثبت نظر
             </button>
           </div>
-
         </div>
 
         {/* Section 3: Tabs */}
@@ -176,104 +175,110 @@ const PlaceInfoContainer = ({
       </div>
 
       {activeTab === "اطلاعات کلی" && (
-          <>
-            {/* Section 4: Icons */}
-            <div className="flex justify-around py-4 px-10 border-b border-gray-300">
-              <img src="/direction.svg" alt="route" className="w-10 h-10" />
-              <img src="/save.svg" alt="save" className="w-10 h-10" />
-              <img src="/call.svg" alt="call" className="w-10 h-10" />
-              <img src="/share.svg" alt="share" className="w-10 h-10" />
+        <>
+          {/* Section 4: Icons */}
+          <div className="flex justify-around py-4 px-10 border-b border-gray-300">
+            <img src="/direction.svg" alt="route" className="w-10 h-10" />
+            <img src="/save.svg" alt="save" className="w-10 h-10" />
+            <img src="/call.svg" alt="call" className="w-10 h-10" />
+            <img src="/share.svg" alt="share" className="w-10 h-10" />
+          </div>
+
+          {/* Section 5: Address, Time, Phone, Links */}
+          <div className="p-4 border-b border-gray-300 text-xs">
+            <div className="flex">
+              <img
+                src="/Map Point.svg"
+                alt="location"
+                className="w-5 h-5 m-2"
+              />
+              <p className="text-xs text-gray-600 mt-2">{address}</p>
             </div>
 
-            {/* Section 5: Address, Time, Phone, Links */}
-            <div className="p-4 border-b border-gray-300 text-xs">
-              <div className="flex">
-                <img src="/Map Point.svg" alt="location" className="w-5 h-5 m-2" />
-                <p className="text-xs text-gray-600 mt-2">{address}</p>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div
-                  className="text-gray-600 flex items-center cursor-pointer"
-                  onClick={() => setIsTimeExpanded(!isTimeExpanded)}
-                >
-                  <img
-                    src="/Clock Circle.svg"
-                    alt="clock"
-                    className="w-5 h-5 m-2"
-                  />
-                  {isTimeExpanded
-                    ? `${isOpen ? "باز" : "بسته"}`
-                    : `${isOpen ? "باز" : "بسته"} - ${todayName}: ${todayHours}`}
-                </div>
-
-                <div className="flex items-center">
-                  <img
-                    src="/Round Alt Arrow Down.svg"
-                    alt="toggle"
-                    className={`w-5 h-5 m-2 transform transition-transform cursor-pointer ${
-                      isTimeExpanded ? "rotate-0" : "rotate-180"
-                    }`}
-                    onClick={() => setIsTimeExpanded(!isTimeExpanded)}
-                  />
-                  <img
-                    src="/Add Square.svg"
-                    alt="link"
-                    className="w-5 h-5 m-2"
-                  />
-                </div>
-              </div>
-
+            <div className="flex justify-between items-center">
               <div
-                className={`overflow-hidden transition-all duration-500 ${
-                  isTimeExpanded ? "max-h-[500px]" : "max-h-0"
-                }`}
+                className="text-gray-600 flex items-center cursor-pointer"
+                onClick={() => setIsTimeExpanded(!isTimeExpanded)}
               >
-                <div className="mr-7 ml-4 text-xs text-gray-600">
-                  {renderWeeklySchedule()}
-                </div>
+                <img
+                  src="/Clock Circle.svg"
+                  alt="clock"
+                  className="w-5 h-5 m-2"
+                />
+                {isTimeExpanded
+                  ? `${isOpen ? "باز" : "بسته"}`
+                  : `${isOpen ? "باز" : "بسته"} - ${todayName}: ${todayHours}`}
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex">
-                  <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
-                  <p className="text-gray-600 mt-2">{phone}</p>
-                </div>
-                <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex">
-                  <img src="/Link.svg" alt="link" className="w-5 h-5 m-2" />
-                  <p className="text-gray-600 mt-2">
-                    <a href={links} className="font-thin text-blue-500">
-                      {links}
-                    </a>
-                  </p>
-                </div>
+              <div className="flex items-center">
+                <img
+                  src="/Round Alt Arrow Down.svg"
+                  alt="toggle"
+                  className={`w-5 h-5 m-2 transform transition-transform cursor-pointer ${
+                    isTimeExpanded ? "rotate-0" : "rotate-180"
+                  }`}
+                  onClick={() => setIsTimeExpanded(!isTimeExpanded)}
+                />
                 <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
               </div>
             </div>
 
-            {/* Section 6: Comment Button */}
-            <div className="flex flex-col justify-center items-center gap-4 p-4">
-              <p className="text-sm text-gray-600">نظر خود را با ما به اشتراک بگذارید</p>
-              <button className="w-[100px] py-1 bg-white border border-purple-500
+            <div
+              className={`overflow-hidden transition-all duration-500 ${
+                isTimeExpanded ? "max-h-[500px]" : "max-h-0"
+              }`}
+            >
+              <div className="mr-7 ml-4 text-xs text-gray-600">
+                {renderWeeklySchedule()}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
+                <p className="text-gray-600 mt-2">{phone}</p>
+              </div>
+              <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <img src="/Link.svg" alt="link" className="w-5 h-5 m-2" />
+                <p className="text-gray-600 mt-2">
+                  <a href={links} className="font-thin text-blue-500">
+                    {links}
+                  </a>
+                </p>
+              </div>
+              <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+            </div>
+          </div>
+
+          {/* Section 6: Comment Button */}
+          <div className="flex flex-col justify-center items-center gap-4 p-4">
+            <p className="text-sm text-gray-600">
+              نظر خود را با ما به اشتراک بگذارید
+            </p>
+            <button
+              className="w-[100px] py-1 bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500"
-                      onClick={handleSubmitCommentButton}>
-                ثبت نظر
-              </button>
-            </div>
-          </>
-      )}
-      
-        {activeTab === "نظرات" && (
-          <div className="flex items-center justify-center w-full">
-            <CommentsList showCommentForm={showCommentForm} handleSubmitCommentButton={handleSubmitCommentButton}
-                          setShowCommentForm={setShowCommentForm}/>
+              onClick={handleSubmitCommentButton}
+            >
+              ثبت نظر
+            </button>
           </div>
-        )}
-      
+        </>
+      )}
+
+      {activeTab === "نظرات" && (
+        <div className="flex items-center justify-center w-full">
+          <CommentsList
+            showCommentForm={showCommentForm}
+            handleSubmitCommentButton={handleSubmitCommentButton}
+            setShowCommentForm={setShowCommentForm}
+          />
+        </div>
+      )}
     </>
   );
 };

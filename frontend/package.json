@@ -26,10 +26,11 @@
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^7.2.0",
     "react-toastify": "^11.0.5",
     "solar-icon-set": "^1.0.0",
-    "tailwind-scrollbar": "^4.0.2",
+    "tailwind-scrollbar": "^2.0.1",
     "tailwind-scrollbar-hide": "^2.0.0",
     "zustand": "^5.0.3"
   },

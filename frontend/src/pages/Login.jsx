@@ -9,6 +9,7 @@ import routes from "../routes/Routes";
 import { useLoginStep, useEmail, useUserLogin } from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const { step, setStep } = useLoginStep();
@@ -137,6 +138,10 @@ const Login = () => {
 
   return (
     <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
+      <Helmet>
+        <title>ورود</title>
+      </Helmet>
+
       <PageTransition key={step}>
         {step === "email" && (
           <EmailInput

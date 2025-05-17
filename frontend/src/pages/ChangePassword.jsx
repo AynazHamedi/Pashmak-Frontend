@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { useUserLogin, useEmail } from "../stores/login";
-
+import { Helmet } from "react-helmet";
 import { usePostRequest } from "../services/api";
 
 const ChangePassword = () => {
@@ -89,6 +89,9 @@ const ChangePassword = () => {
 
   return (
     <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
+      <Helmet>
+        <title>تغییر رمز</title>
+      </Helmet>
       <PageTransition key={step}>
         {step === "verification" && (
           <VerificationCode

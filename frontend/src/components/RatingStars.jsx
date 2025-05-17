@@ -12,17 +12,16 @@ const RatingStars = ({ totalStars = 5, onRate }) => {
 
   return (
     <div className="flex gap-0">
-      {
-        Array.from({ length: totalStars }, (_, i) => {
+      {Array.from({ length: totalStars }, (_, i) => {
         const index = i + 1;
         const isFilled = hovered ? index <= hovered : index <= rating;
 
         return (
           <button
             key={index}
-            onClick={(e)=>{
-              e.preventDefault()
-              handleClick(index)
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick(index);
             }}
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
@@ -36,8 +35,7 @@ const RatingStars = ({ totalStars = 5, onRate }) => {
             />
           </button>
         );
-        })
-      }
+      })}
     </div>
   );
 };

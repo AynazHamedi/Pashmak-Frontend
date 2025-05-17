@@ -1,14 +1,14 @@
-import { useState} from 'react'
-import RatingStars from './RatingStars'
+import { useState } from "react";
+import RatingStars from "./RatingStars";
 import { useNavigate } from "react-router-dom";
-import { CameraAdd,CloseCircle } from 'solar-icon-set'
-import moment from 'jalali-moment'
+import { CameraAdd, CloseCircle } from "solar-icon-set";
+import moment from "jalali-moment";
 import { useUserLogin } from "../stores/login";
 
 export default function CommentSubmitForm(props) {
-  const [rate,setRate]=useState(0)
-  const [photos,setPhotos]=useState([])
-  const [commentText,setCommentText]=useState("")
+  const [rate, setRate] = useState(0);
+  const [photos, setPhotos] = useState([]);
+  const [commentText, setCommentText] = useState("");
   const navigate = useNavigate();
   const { userLogin } = useUserLogin();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
@@ -25,56 +25,69 @@ export default function CommentSubmitForm(props) {
   //   }
   // }
 
-  const handleCommentTextChange=(e)=>{
-    setCommentText(e.target.value)
-  }
+  const handleCommentTextChange = (e) => {
+    setCommentText(e.target.value);
+  };
 
-  const handleDiscardClick=(e)=>{
-    e.preventDefault()
-    props.setShowCommentForm(false)
-  }
+  const handleDiscardClick = (e) => {
+    e.preventDefault();
+    props.setShowCommentForm(false);
+  };
 
-  const handleCommentSubmit=(e)=>{
-    e.preventDefault()
-    if(userLogin)
-    {
-      const dummyUser={first_name:"a",last_name:"b",avatar_url:"/profilePhotoPlaceholder.svg",numberOfComments:144}
-      const date=moment().locale('fa').format('YYYY/MM/DD');
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (userLogin) {
+      const dummyUser = {
+        first_name: "a",
+        last_name: "b",
+        avatar_url: "/profilePhotoPlaceholder.svg",
+        numberOfComments: 144,
+      };
+      const date = moment().locale("fa").format("YYYY/MM/DD");
       //const date="2025-04-10";
-      const text=commentText
-      const rating=rate;
-      const numberOfLikes=1;
-      const numberOfDislikes=0;
-      const newComments=[{user:dummyUser,created_at:date,content:text,rating:rating,likes:numberOfLikes,dislikes:numberOfDislikes},...props.comments]
-      props.setComments(newComments)
-      
-      props.setShowCommentForm(false)
-    }
-    else
-    {
-      setShowLoginPopup(true)
-    }
-  }
-  return (
-    <div className='flex items-center justify-center w-full h-full'>
-      <form className='flex flex-col w-full items-start justify-center gap-4 h-full'>
+      const text = commentText;
+      const rating = rate;
+      const numberOfLikes = 1;
+      const numberOfDislikes = 0;
+      const newComments = [
+        {
+          user: dummyUser,
+          created_at: date,
+          content: text,
+          rating: rating,
+          likes: numberOfLikes,
+          dislikes: numberOfDislikes,
+        },
+        ...props.comments,
+      ];
+      props.setComments(newComments);
 
+      props.setShowCommentForm(false);
+    } else {
+      setShowLoginPopup(true);
+    }
+  };
+  return (
+    <div className="flex items-center justify-center w-full h-full">
+      <form className="flex flex-col w-full items-start justify-center gap-4 h-full">
         {/*rating*/}
-        <div className='flex flex-col items-center justify-center w-full py-2 gap-3 pt-5'>
-          <span className='text-gray-900 text-center w-full text-xl'>به این مکان امتیاز بدهید</span>
-          <RatingStars onRate={setRate}/>
+        <div className="flex flex-col items-center justify-center w-full py-2 gap-3 pt-5">
+          <span className="text-gray-900 text-center w-full text-xl">
+            به این مکان امتیاز بدهید
+          </span>
+          <RatingStars onRate={setRate} />
         </div>
 
         {/*comment*/}
-        <div className='flex items-center justify-center w-full px-3' >
-          <textarea className='bg-white text-start text-gray-900 
+        <div className="flex items-center justify-center w-full px-3">
+          <textarea
+            className="bg-white text-start text-gray-900 
                     border border-gray-200 rounded-lg w-full focus:outline-none
-                    resize-none scrollbar-hide px-2 py-1 h-[100px]' 
-                    placeholder='نظر خود را درباره این مکان بنویسید'
-                    value={commentText}
-                    onChange={handleCommentTextChange}
-                    >
-          </textarea>
+                    resize-none scrollbar-hide px-2 py-1 h-[100px]"
+            placeholder="نظر خود را درباره این مکان بنویسید"
+            value={commentText}
+            onChange={handleCommentTextChange}
+          ></textarea>
         </div>
 
         {/*add photo button*/}
@@ -129,13 +142,13 @@ export default function CommentSubmitForm(props) {
           <button
             type="submit"
             onClick={handleCommentSubmit}
-            disabled={rate===0}
+            disabled={rate === 0}
             className="w-[40%] bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500 
                                       disabled:text-purple-300 disabled:border-purple-300"
           >
-            ثبت 
+            ثبت
           </button>
           <button
             onClick={handleDiscardClick}
@@ -148,36 +161,36 @@ export default function CommentSubmitForm(props) {
           </button>
         </div>
         {showLoginPopup && (
-        <div className="z-[999] fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white p-6 rounded-3xl shadow-lg w-1/3 max-w-[400px] min-w-[200px]">
-          <div className="text-right">
-            <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>
-            <p className="mb-4 text-gray-500">لطفا برای استفاده از این امکان وارد حساب کاربری خود شوید</p>
-            </div>
-            <div className="flex justify-center space-x-10">
-              <button
-                onClick={() => setShowLoginPopup(false)}
-                className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
-              >
-                بعدا
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowLoginPopup(false);
-                  navigate("/login");
-                }
-              }
-                className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
-              >
-                ورود به حساب
-              </button>
+          <div className="z-[999] fixed inset-0 flex items-center justify-center bg-black/50">
+            <div className="bg-white p-6 rounded-3xl shadow-lg w-1/3 max-w-[400px] min-w-[200px]">
+              <div className="text-right">
+                <p className="mb-4 font-bold text-black">ورود به حساب کاربری</p>
+                <p className="mb-4 text-gray-500">
+                  لطفا برای استفاده از این امکان وارد حساب کاربری خود شوید
+                </p>
+              </div>
+              <div className="flex justify-center space-x-10">
+                <button
+                  onClick={() => setShowLoginPopup(false)}
+                  className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
+                >
+                  بعدا
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowLoginPopup(false);
+                    navigate("/login");
+                  }}
+                  className="bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200"
+                >
+                  ورود به حساب
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         )}
-
       </form>
     </div>
-  )
+  );
 }

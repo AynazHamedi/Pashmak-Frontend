@@ -1,6 +1,6 @@
-import {React,useEffect,useState} from 'react'
-import UserComment from './UserComment'
-import CommentSubmitForm from './CommentSubmitForm';
+import { React, useEffect, useState } from "react";
+import UserComment from "./UserComment";
+import CommentSubmitForm from "./CommentSubmitForm";
 import { useGetRequest } from "../services/api";
 
 export default function CommentsList(props) {
@@ -39,60 +39,62 @@ export default function CommentsList(props) {
   //   numberOfLikes:3,
   //   numberOfDislikes:2,
   //   attachedPhotos:[]}])
-  const locationId=1;
-  const [comments,setComments]=useState([])
-  const {data,isLoading,error}=useGetRequest("locationComments",{url:`/comments/${locationId}`})
+  const locationId = 1;
+  const [comments, setComments] = useState([]);
+  const { data, isLoading, error } = useGetRequest("locationComments", {
+    url: `/comments/${locationId}`,
+  });
 
-  useEffect(()=>{
-    if(data){
-      setComments(data.comments||[])
+  useEffect(() => {
+    if (data) {
+      setComments(data.comments || []);
     }
-  },[data])
-  console.log(comments)
+  }, [data]);
+  console.log(comments);
   return (
     <>
-        {
-          isLoading &&
-          <div className='flex flex-col justify-center items-center w-full p-2 float-center'>
-            <span className='text-gray-900 text-3xl '>دریافت نظرات بیشتر...</span>
-          </div>
-        }
-        {
-          !isLoading && props.showCommentForm &&
-          (
-            <CommentSubmitForm showCommentForm={props.showCommentForm} setShowCommentForm={props.setShowCommentForm} comments={comments} setComments={setComments}/>
-          )
-        }
-        { 
-            !isLoading && !props.showCommentForm && 
-            (
-              error ?
-                (
-                  /* Section 6: Comment Button */
-                  <div className="flex flex-col justify-center items-center gap-4 p-4">
-                    <p className="text-sm text-gray-600">نظری برای این مکان ثبت نشده است</p>
-                    <button className="w-[100px] py-1 bg-white border border-purple-500
+      {isLoading && (
+        <div className="flex flex-col justify-center items-center w-full p-2 float-center">
+          <span className="text-gray-900 text-3xl ">دریافت نظرات بیشتر...</span>
+        </div>
+      )}
+      {!isLoading && props.showCommentForm && (
+        <CommentSubmitForm
+          showCommentForm={props.showCommentForm}
+          setShowCommentForm={props.setShowCommentForm}
+          comments={comments}
+          setComments={setComments}
+        />
+      )}
+      {!isLoading &&
+        !props.showCommentForm &&
+        (error ? (
+          /* Section 6: Comment Button */
+          <div className="flex flex-col justify-center items-center gap-4 p-4">
+            <p className="text-sm text-gray-600">
+              نظری برای این مکان ثبت نشده است
+            </p>
+            <button
+              className="w-[100px] py-1 bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500"
-                            onClick={props.handleSubmitCommentButton}>
-                      ثبت نظر
-                    </button>
+              onClick={props.handleSubmitCommentButton}
+            >
+              ثبت نظر
+            </button>
+          </div>
+        ) : (
+          <div className="h-full  overflow-y-scroll scrollbar-hide space-y-4 p-0 w-full">
+            {comments.map(
+              (comment, index) =>
+                comment.content.length > 0 && (
+                  <div key={index}>
+                    <UserComment comment={comment} />
                   </div>
-                )
-                :
-                (
-                  <div className='h-full  overflow-y-scroll scrollbar-hide space-y-4 p-0 w-full'>
-                    {
-                    comments.map((comment, index) => (
-                    comment.content.length>0 && <div
-                        key={index}>
-                        <UserComment comment={comment}/>
-                    </div>
-                    ))}
-                  </div>
-                )
-            )
-        }
+                ),
+            )}
+          </div>
+        ))}
     </>
-  )
+  );
 }

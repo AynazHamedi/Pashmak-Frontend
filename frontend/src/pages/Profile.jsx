@@ -6,6 +6,7 @@ import MyComments from "../components/MyComments.jsx";
 import FavoriteLocations from "../components/FavoriteLocations.jsx";
 import { useGetRequest } from "../services/api.jsx";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 const Profile = () => {
   const [reRender, setReRender] = useState(true);
@@ -39,13 +40,16 @@ const Profile = () => {
       if (error.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
-        toast.error("مشکل بکه");
+        toast.error("مشکل در گرفتن اطلاعات پیش آمده!");
       }
     }
   }, [error]);
 
   return (
     <div className="h-screen w-screen flex justify-right items-right">
+      <Helmet>
+        <title>پروفایل</title>
+      </Helmet>
       {isLoading ? (
         <div>loading... </div>
       ) : (

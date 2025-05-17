@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
-
+import { Helmet } from "react-helmet";
 export default function NotFound() {
   const navigate = useNavigate();
 
   return (
     <div className="relative flex h-screen w-screen items-center justify-center bg-[url('/notfound.png')] bg-cover bg-center bg-no-repeat z-[40]">
+      <Helmet>
+        <title>صفحه یافت نشد</title>
+      </Helmet>
+
       <div className="absolute inset-0 bg-black/10"></div>
 
       <button
