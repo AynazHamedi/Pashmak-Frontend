@@ -21,6 +21,7 @@
     "lucide-react": "^0.507.0",
     "mapbox-gl": "^3.11.1",
     "maplibre-gl": "^5.4.0",
+    "maplibre-react-components": "^0.2.2",
     "motion": "^12.4.10",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",

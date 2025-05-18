@@ -1,20 +1,22 @@
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import MapView from "../components/MapView";
 import PromptBar from "../components/PromptBar";
 import LocateButton from "../components/LocateButton";
 import { useGetRequest, usePostRequest } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
 
-const Map = ({ expendSearch, setExpendSearch, setSearchResult }) => {
+const Map = ({
+  expendSearch,
+  staticPoints,
+  setExpendSearch,
+  setSearchResult,
+}) => {
   const [userLocation, setUserLocation] = useState(null);
-
-  const [staticPoints, setStaticPoints] = useState([
-    { id: 1, name: "Point A", lat: 35.6997, lon: 51.3381 },
-    { id: 2, name: "Point B", lat: 35.7153, lon: 51.4043 },
-    { id: 3, name: "Point C", lat: 35.7326, lon: 51.4469 },
-  ]);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { mutate: fetchInitialTags, isLoading: isFetchingInitialTags } =
     usePostRequest();
@@ -31,42 +33,13 @@ const Map = ({ expendSearch, setExpendSearch, setSearchResult }) => {
       "سینما",
       "تئاتر",
     ];
-    // return new Promise((resolve, reject) => {
-    //   fetchInitialTags(
-    //     { url: "/api/tags" },
-    //     {
-    //       onSuccess: (data) => {
-    //         resolve(data.tags);
-    //       },
-    //       onError: (error) => {
-    //         console.error("Error fetching initial tags:", error);
-    //         reject(error);
-    //       },
-    //     }
-    //   );
-    // });
   };
 
   const { mutate: fetchSuggestedTags, isLoading: isFetchingSuggestedTags } =
     usePostRequest();
   const handleFetchSuggestedTags = async (input) => {
     return ["کتابخانه", "طبیعت"];
-    // return new Promise((resolve, reject) => {
-    //   fetchSuggestedTags(
-    //     { url: `/api/suggestions`, data: { query: input } },
-    //     {
-    //       onSuccess: (data) => {
-    //         resolve(data.suggestions);
-    //       },
-    //       onError: (error) => {
-    //         console.error("Error fetching suggested tags:", error);
-    //         reject(error);
-    //       },
-    //     }
-    //   );
-    // });
   };
-
   const {
     mutate: search,
     data: searchOutput,
@@ -100,7 +73,20 @@ const Map = ({ expendSearch, setExpendSearch, setSearchResult }) => {
       },
     );
   };
-  const navigate = useNavigate();
+
+  const handlePointClick = ({ id, lat, lng }) => {
+    if (id && lat && lng) {
+      const newParams = new URLSearchParams();
+      newParams.set("id", id);
+      newParams.set("lat", lat.toFixed(5));
+      newParams.set("lng", lng.toFixed(5));
+
+      navigate({
+        pathname: routes.place,
+        search: `?${newParams.toString()}`,
+      });
+    }
+  };
 
   return (
     <div style={{ position: "relative" }}>
@@ -118,7 +104,11 @@ const Map = ({ expendSearch, setExpendSearch, setSearchResult }) => {
         setUserLocation={setUserLocation}
         userLocation={userLocation}
       />
-      <MapView userLocation={userLocation} staticPoints={staticPoints} />
+      <MapView
+        userLocation={userLocation}
+        staticPoints={searchOutput?.places}
+        onPointClick={handlePointClick}
+      />
     </div>
   );
 };

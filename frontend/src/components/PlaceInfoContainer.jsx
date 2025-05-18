@@ -5,6 +5,8 @@ import CommentsList from "./CommentsList";
 import { HandPills } from "solar-icon-set";
 import SharePopup from "./SharePopUp";
 import { Helmet } from "react-helmet";
+import routes from "../routes/Routes";
+
 const PlaceInfoContainer = ({
   expendSearch,
   setExpendSearch,
@@ -19,13 +21,12 @@ const PlaceInfoContainer = ({
   hasSearch,
 }) => {
   // Default values
-  imageUrl = "/resturant.jpg";
-  name = "نام رستوران";
-  rating = 2.5;
-  reviews = 120;
-  address = "آدرس رستوران";
-  phone = "شماره تماس: 1234567890";
-  links = "https://example.com";
+  imageUrl = imageUrl || "/resturant.jpg";
+  rating = rating || 2.5;
+  reviews = reviews || 120;
+  address = address || "آدرس رستوران";
+  phone = phone || "شماره تماس: 1234567890";
+  links = links || "https://example.com";
 
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
@@ -95,6 +96,15 @@ const PlaceInfoContainer = ({
       </button>
     ));
   };
+  const onClose = () => {
+    if (hasSearch) {
+      if (!expendSearch) {
+        setExpendSearch(true);
+      } else {
+        navigate(routes.search);
+      }
+    } else navigate(routes.map);
+  };
 
   // Render weekly schedule
   const renderWeeklySchedule = () => {
@@ -110,6 +120,7 @@ const PlaceInfoContainer = ({
       </p>
     ));
   };
+
   const navigate = useNavigate();
   return (
     <>
@@ -124,21 +135,26 @@ const PlaceInfoContainer = ({
             alt={name}
             className="w-full h-full object-cover"
           />
-          <img
-            src="/closeWhiteBg.svg" // Replace with the path to your close icon
-            alt="close"
-            className="absolute top-1 right-1 w-8 h-8 cursor-pointer"
-            onClick={() => {
-              if (hasSearch) {
-                if (!expendSearch) {
-                  setExpendSearch(true);
-                  // navigate("/map/search");
-                } else {
-                  navigate("/map/search");
-                }
-              } else navigate("/map"); // Replace with your navigation logic
-            }} // Replace with your close logic
-          />
+          {hasSearch && !expendSearch ? (
+            <div
+              onClick={onClose}
+              className="fixed w-9 h-9 right-20 top-2 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-[10] cursor-pointer"
+              aria-label="Expand search results"
+            >
+              <img
+                src="/arrow_left.svg"
+                className="h-6 w-6 -mt-0.5"
+                alt="Expand"
+              />
+            </div>
+          ) : (
+            <img
+              src="/closeWhiteBg.svg"
+              alt="close"
+              className="absolute top-2 right-2 w-9 h-9 cursor-pointer"
+              onClick={onClose}
+            />
+          )}
         </div>
 
         <div className="flex flex-row items-center bg-white justify-start w-full">
