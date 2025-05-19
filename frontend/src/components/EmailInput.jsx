@@ -28,7 +28,7 @@ const EmailInput = ({ handleEmailSubmit, isLoading }) => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]"
+        className="relative rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]"
       >
         <div className="absolute right-4 top-4 cursor-pointer">
           <img

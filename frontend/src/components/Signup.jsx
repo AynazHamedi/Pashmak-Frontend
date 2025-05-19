@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
 import routes from "../routes/Routes";
+import { useLoginStep } from "../stores/login";
 
 const Signup = ({ handleSignup }) => {
   const [password, setPassword] = useState("");
@@ -16,6 +17,8 @@ const Signup = ({ handleSignup }) => {
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { setStep } = useLoginStep();
+
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -93,7 +96,10 @@ const Signup = ({ handleSignup }) => {
           src="/closeWhiteBg.svg"
           alt="close"
           className="w-8 h-auto"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            setStep("email");
+            navigate(-1);
+          }}
         />
       </div>
 

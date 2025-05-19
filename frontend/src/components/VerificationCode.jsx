@@ -92,13 +92,16 @@ const VerificationCode = ({
 
   return (
     <div>
-      <form className="relative w-full h-full rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]">
+      <form className="relative rounded-[24px] bg-white p-8 shadow-lg h-[450px] w-[370px] lg:h-[584px] lg:w-[474px]">
         <div className="absolute right-4 top-4 cursor-pointer">
           <img
             src="/closeWhiteBg.svg"
             alt="close"
             className="w-8 h-auto"
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              setStep("email");
+              navigate(-1);
+            }}
           />
         </div>
 
