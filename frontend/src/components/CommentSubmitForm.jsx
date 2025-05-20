@@ -2,8 +2,9 @@ import { useState } from "react";
 import RatingStars from "./RatingStars";
 import { useNavigate } from "react-router-dom";
 import { CameraAdd, CloseCircle } from "solar-icon-set";
-import moment from "jalali-moment";
 import { useUserLogin } from "../stores/login";
+import { usePostRequest } from "../services/api";
+import { toast } from "react-toastify";
 
 export default function CommentSubmitForm(props) {
   const [rate, setRate] = useState(0);
@@ -12,6 +13,7 @@ export default function CommentSubmitForm(props) {
   const navigate = useNavigate();
   const { userLogin } = useUserLogin();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const { mutate: submitComment, isLoading: isUploading } = usePostRequest();
 
   // const handleDeletePhotoButton=(deletedPhoto)=>{
   //   setPhotos(photos.filter(item=>item!==deletedPhoto))
@@ -37,32 +39,30 @@ export default function CommentSubmitForm(props) {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (userLogin) {
-      const dummyUser = {
-        first_name: "a",
-        last_name: "b",
-        avatar_url: "/profilePhotoPlaceholder.svg",
-        numberOfComments: 144,
-      };
-      const date = moment().locale("fa").format("YYYY/MM/DD");
-      //const date="2025-04-10";
       const text = commentText;
       const rating = rate;
-      const numberOfLikes = 1;
-      const numberOfDislikes = 0;
-      const newComments = [
+      submitComment(
         {
-          user: dummyUser,
-          created_at: date,
-          content: text,
-          rating: rating,
-          likes: numberOfLikes,
-          dislikes: numberOfDislikes,
+          url:`comments/${props.locationId}/add-comment`,
+          data:{Content:text,rating:rating},
         },
-        ...props.comments,
-      ];
-      props.setComments(newComments);
-
-      props.setShowCommentForm(false);
+        {
+          onSuccess: (data) => {
+            console.log(data)
+            toast.success("نظر شما با موفقیت ثبت شد");
+            props.setRefetchComments(!props.refetchComments)
+            props.setShowCommentForm(false);
+          },
+          onError: (error) => {
+            if (error.response?.data?.message) {
+              toast.error(error.response.data.message);
+            } else {
+              toast.error("ای بابا نشد که");
+            }
+            props.setShowCommentForm(false);
+          },
+        }
+      )
     } else {
       setShowLoginPopup(true);
     }

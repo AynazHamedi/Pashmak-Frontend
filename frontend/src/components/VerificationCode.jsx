@@ -111,12 +111,14 @@ const VerificationCode = ({
 
         <p className="text-right text-muted lg:text-lg text-md mt-2">
           کد ۴ رقمی فرستاده شده به
+          {" "}
           <span
             className="text-primary font-bold inline-block"
             style={{ direction: "ltr", unicodeBidi: "bidi-override" }}
           >
             {email}
           </span>
+          {" "}
           را وارد کنید
         </p>
 

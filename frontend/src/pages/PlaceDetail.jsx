@@ -61,7 +61,7 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch }) => {
         setExpendSearch={setExpendSearch}
         expendSearch={expendSearch}
         name={pointDetails?.place.name}
-        rating={pointDetails?.place.rating}
+        rating={pointDetails?.place.rating.toFixed(1)}
       />
     </div>
   );

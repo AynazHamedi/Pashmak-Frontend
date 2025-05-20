@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import StarRating from "./StarRating";
 import { Like, Dislike, DangerCircle } from "solar-icon-set";
 
@@ -55,7 +55,7 @@ const UserComment = (props) => {
       <div
         className={`text-right whitespace-pre-line mx-2 leading-6 mb-1 transition-all duration-300`}
       >
-        <p className=" text-gray-900">
+        <p className="break-words text-gray-900">
           {displayedText}
           {fullText.length > 40 && !isExpanded && "..."}
         </p>

@@ -304,7 +304,7 @@ const PlaceInfoContainer = ({
       )}
 
       {activeTab === "نظرات" && (
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center w-full h-full max-h-[412px]">
           <CommentsList
             showCommentForm={showCommentForm}
             handleSubmitCommentButton={handleSubmitCommentButton}
