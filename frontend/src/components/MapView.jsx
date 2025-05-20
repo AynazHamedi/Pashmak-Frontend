@@ -226,14 +226,13 @@ const MapView = ({ staticPoints, userLocation, onPointClick }) => {
       onMoveEnd();
 
       // Clean up
-      removeLayerAndSource = () => {
-        if (!map) return;
-        if (map.getLayer("points-layer")) map.removeLayer("points-layer");
-        if (map.getSource("points")) map.removeSource("points");
-        if (map.hasImage("cat")) map.removeImage("cat");
-        map.off("moveend", onMoveEnd);
-        map.off("click", "points-layer", onClick);
-      };
+      // removeLayerAndSource = () => {
+      //   if (map.getLayer("points-layer")) map.removeLayer("points-layer");
+      //   if (map.getSource("points")) map.removeSource("points");
+      //   if (map.hasImage("cat")) map.removeImage("cat");
+      //   map.off("moveend", onMoveEnd);
+      //   map.off("click", "points-layer", onClick);
+      // };
     };
 
     if (map.loaded()) {

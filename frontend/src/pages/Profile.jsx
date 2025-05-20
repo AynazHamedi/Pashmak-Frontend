@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PersonalInfoForm from "../components/PersonalInfoForm.jsx";
 import ProfileNavbar from "../components/ProfileNavbar.jsx";
 import Galley from "../components/Galley.jsx";
@@ -11,39 +11,46 @@ import { Helmet } from "react-helmet";
 const Profile = () => {
   const [reRender, setReRender] = useState(true);
   const [state, setState] = useState("profileInfo");
-  const { data, isLoading, error, refetch } = useGetRequest("userProfile", {
-    url: "/profiles/me",
-  });
+  const {
+    mutate: fetchProfile,
+    data,
+    isPending: isLoading,
+    error,
+  } = useGetRequest();
+  const {
+    mutate: getProfilePhoto,
+    profilePhotofetched,
+    isPending: isFetchingProfilePhoto,
+    profilePhotoError,
+  } = useGetRequest();
   const [user, setUser] = useState({
-    firstname: "کاربر",
-    lastname: "ناشناس",
-    profilephoto: "/hardcode_pp.jpg",
+    // FirstName: "کاربر",
+    // LastName: "ناشناس",
+    // Avatar_url: "/hardcode_pp.jpg",
+    // score:0,
+    // Email:""
   });
 
   useEffect(() => {
-    if (data) {
-      const newUser = {
-        firstname: data.message.FirstName || "کاربر",
-        lastname: data.message.LastName || "ناشناس",
-        profilephoto: data.message.Avatar_url || "/profilePhotoPlaceholder.svg",
-      };
-      setUser(newUser);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    refetch();
-  }, [reRender, refetch]);
-
-  useEffect(() => {
-    if (error) {
-      if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("مشکل در گرفتن اطلاعات پیش آمده!");
-      }
-    }
-  }, [error]);
+    fetchProfile(
+      {
+        endpoint: "/profiles/me",
+        params: {},
+      },
+      {
+        onSuccess: (data) => {
+          setUser(data);
+        },
+        onError: (error) => {
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("dwdwwdwخطایی رخ داده. لطفا دوباره امتحان کنید");
+          }
+        },
+      },
+    );
+  }, [reRender, fetchProfile]);
 
   return (
     <div className="h-screen w-screen flex justify-right items-right">

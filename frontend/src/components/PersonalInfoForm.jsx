@@ -3,22 +3,23 @@ import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { toast } from "react-toastify";
 import { Camera } from "solar-icon-set";
-import { usePatchRequest, usePostRequest } from "../services/api";
+import { usePostRequest } from "../services/api";
 
 const PersonalInfo = (props) => {
-  let default_firstname = props.user.firstname;
+  let default_firstname = props.user.FirstName;
   const [firstname, setFirstname] = useState(default_firstname);
   const [firstNameChanged, setFirstNameChanged] = useState(false);
   // hard code
-  let default_lastname = props.user.lastname;
+  let default_lastname = props.user.LastName;
   const [lastname, setLastname] = useState(default_lastname);
   const [lastNameChanged, setLastNameChanged] = useState(false);
   //hard code
   let default_aboutMe = "خسته ام";
   const [aboutMe, setAboutMe] = useState(default_aboutMe);
   const [aboutMeChanged, setAboutMeChanged] = useState(false);
+
   //hard code
-  let defaultProfilePicture = props.user.profilephoto;
+  let defaultProfilePicture = props.user.Avatar_url;
   const [profilePicture, setProfilePicture] = useState(defaultProfilePicture);
   const [shownProfile, setShownProfile] = useState(defaultProfilePicture);
   const [profilePictureChanged, setProfilePictureChanged] = useState(false);
@@ -34,23 +35,40 @@ const PersonalInfo = (props) => {
 
   const navigate = useNavigate();
 
-  const { mutate: changeProfileInfo, isLoading: isLoading } = usePatchRequest();
   const { mutate: changeProfilePhoto, isLoading: isUploading } =
     usePostRequest();
-
-  useEffect(() => {
-    setFirstname(props.user.firstname);
-    setLastname(props.user.lastname);
-    setProfilePicture(props.user.profilephoto);
-  }, [props.user]);
+  const { mutate: changeProfile, isLoading: isChanging } = usePostRequest();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("profilePhoto", profilePicture);
+    changeProfile(
+      {
+        url: "/profiles/me/update",
+        data: {
+          firstname: firstname,
+          lastname: lastname,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success("تغییرات حساب کاربری شما با موفقیت اعمال شد✅");
+          props.setReRender(!props.reRender);
+        },
+        onError: (error) => {
+          console.error("خطا در تغییر اطلاعات حساب کاربری:", error);
+          if (error.response?.data?.message) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error("مشکلی رخ داده است. دوباره تلاش کنید.");
+          }
+        },
+      },
+    );
     changeProfilePhoto(
       {
-        url: "/profiles/avatar/1",
+        url: "/profiles/avatar/",
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -59,7 +77,6 @@ const PersonalInfo = (props) => {
       {
         onSuccess: () => {
           toast.success("عکس پروفایل با موفقیت تغییر یافت");
-          props.setReRender(!props.reRender);
         },
         onError: (error) => {
           if (error.response?.data?.message) {
@@ -87,7 +104,8 @@ const PersonalInfo = (props) => {
     navigate(routes.changePassword);
   };
 
-  const handleDiscardChangesClick = () => {
+  const handleDiscardChangesClick = (e) => {
+    e.preventDefault();
     setFirstname(default_firstname);
     setLastname(default_lastname);
     setProfilePicture(defaultProfilePicture);
@@ -192,7 +210,7 @@ const PersonalInfo = (props) => {
         <div className="w-[80%] relative mt-[20px] ">
           <input
             placeholder="نام"
-            value={firstname}
+            value={firstname || ""}
             onChange={(e) => handleNameChange(e, setFirstname)}
             dir="rtl"
             className="w-full rounded-md border-[1px] bg-white px-3 py-2 sm:px-4 sm:py-2 border-gray-400
@@ -203,7 +221,7 @@ const PersonalInfo = (props) => {
         <div className="w-[80%] relative mt-[20px]">
           <input
             placeholder="نام خانوادگی"
-            value={lastname}
+            value={lastname || ""}
             onChange={(e) => handleNameChange(e, setLastname)}
             dir="rtl"
             className={`w-full rounded-md border-[1px] bg-white px-3 py-2 sm:px-4 sm:py-2 border-gray-400
@@ -250,8 +268,8 @@ const PersonalInfo = (props) => {
                 !birthDateChanged) ||
               submited
             }
-            className={`w-full py-2 hover:bg-blue-700
-                        rounded-md text-white focus:outline-none 
+            className={`w-full py-2 rounded-md
+                        text-white focus:outline-none 
                         transition duration-300 text-sm sm:text-base ${
                           (!firstNameChanged &&
                             !lastNameChanged &&
