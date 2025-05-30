@@ -1,42 +1,26 @@
 import { useState } from "react";
-import StarRating from "./StarRating";
-import { useNavigate } from "react-router-dom";
-import CommentsList from "./CommentsList";
 import SharePopup from "./SharePopUp";
 import PhoneCall from "./PhoneCall";
-import { Helmet } from "react-helmet";
-import routes from "../routes/Routes";
 
 const PlaceInfoContainer = ({
-  expendSearch,
-  setExpendSearch,
-  imageUrl,
-  name,
-  rating,
-  reviews,
   address,
   weeklySchedule,
   phone,
   links,
-  hasSearch,
+  handleSubmitCommentButton,
 }) => {
   // Default values
-  imageUrl = imageUrl || "/resturant.jpg";
-  rating = rating || 2.5;
-  reviews = reviews || 120;
   address = address || "آدرس رستوران";
   phone = phone || "شماره تماس: 1234567890";
   links = links || "https://example.com";
 
-  const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const [isTimeExpanded, setIsTimeExpanded] = useState(false);
-  const [showCommentForm, setShowCommentForm] = useState(false);
+  // const [showCommentForm, setShowCommentForm] = useState(false);
 
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const [isCallOpen, setIsCallOpen] = useState(false);
 
-  const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
   const shareURL = window.location.href;
 
   // Weekly schedule
@@ -67,48 +51,6 @@ const PlaceInfoContainer = ({
     return now >= start && now <= end;
   })();
 
-  const handleSubmitCommentButton = () => {
-    setActiveTab("نظرات");
-    setShowCommentForm(true);
-  };
-
-  // Render tabs
-  const renderTabs = () => {
-    return tabs.map((tab, index) => (
-      <button
-        key={tab}
-        className={`flex-1 py-2 text-center bg-transparent text-xs ${
-          activeTab === tab ? "font-bold text-gray-800" : "text-gray-600"
-        }`}
-        style={{
-          outline: "none",
-          background: "transparent",
-          border: "none",
-        }}
-        onClick={() => {
-          setActiveTab(tab);
-          if (tab !== "نظرات") {
-            setShowCommentForm(false);
-          }
-          document.getElementById(`section-${index}`).scrollIntoView({
-            behavior: "smooth",
-          });
-        }}
-      >
-        {tab}
-      </button>
-    ));
-  };
-  const onClose = () => {
-    if (hasSearch) {
-      if (!expendSearch) {
-        setExpendSearch(true);
-      } else {
-        navigate(routes.search);
-      }
-    } else navigate(routes.map);
-  };
-
   // Render weekly schedule
   const renderWeeklySchedule = () => {
     return Object.entries(weeklySchedule).map(([day, hours], index) => (
@@ -124,79 +66,8 @@ const PlaceInfoContainer = ({
     ));
   };
 
-  const navigate = useNavigate();
   return (
     <>
-      <Helmet>
-        <title>{name}</title>
-      </Helmet>
-      <div className="flex flex-col justify-center items-center sticky top-0 z-10 w-full">
-        {/* Section 1: Image */}
-        <div className="w-full h-1/3">
-          <img
-            src={imageUrl}
-            alt={name}
-            className="w-full h-full object-cover"
-          />
-          {hasSearch && !expendSearch ? (
-            <div
-              onClick={onClose}
-              className="fixed w-9 h-9 right-20 top-2 p-2 rounded-full bg-white hover:bg-gray-100 shadow-md z-[10] cursor-pointer"
-              aria-label="Expand search results"
-            >
-              <img
-                src="/arrow_left.svg"
-                className="h-6 w-6 -mt-0.5"
-                alt="Expand"
-              />
-            </div>
-          ) : (
-            <img
-              src="/closeWhiteBg.svg"
-              alt="close"
-              className="absolute top-2 right-2 w-9 h-9 cursor-pointer"
-              onClick={onClose}
-            />
-          )}
-        </div>
-
-        <div className="flex flex-row items-center bg-white justify-start w-full">
-          {/* Section 2: Name and Rating */}
-          <div className="p-4 bg-white w-full">
-            <h2 className="text-xl font-sans-bold text-black">{name}</h2>
-            <StarRating rating={rating} reviews={reviews} />
-          </div>
-
-          {/* submit comment button */}
-          <div className="flex flex-col justify-center items-cente gap-4 p-4 h-full">
-            <button
-              className="w-[100px] py-1 bg-white border border-purple-500
-                                     text-purple-500 text-sm rounded-lg 
-                                      focus:outline-none focus:border-purple-500 hover:border-purple-500"
-              onClick={(e) => {
-                handleSubmitCommentButton();
-                e.currentTarget.blur(); // This will remove focus from the button
-              }}
-            >
-              ثبت نظر
-            </button>
-          </div>
-        </div>
-
-        {/* Section 3: Tabs */}
-        <div className=" bg-white border-b border-gray-300  w-full">
-          <div className="flex justify-around">{renderTabs()}</div>
-          <div
-            className="absolute bottom-0 h-[3px] bg-purple-500 transition-all duration-300"
-            style={{
-              width: `${100 / tabs.length}%`,
-              transform: `translateX(${-tabs.indexOf(activeTab) * 100}%)`,
-            }}
-          ></div>
-        </div>
-      </div>
-
-      {activeTab === "اطلاعات کلی" && (
         <div className="flex-col items-center justify-center overflow-y-auto  ">
           {/* Section 4: Icons */}
           <div className="flex justify-around py-4 px-10 border-b border-gray-300">
@@ -318,18 +189,7 @@ const PlaceInfoContainer = ({
               ثبت نظر
             </button>
           </div>
-        </div>
-      )}
-
-      {activeTab === "نظرات" && (
-        <div className="flex items-center justify-center w-full h-full max-h-[412px]">
-          <CommentsList
-            showCommentForm={showCommentForm}
-            handleSubmitCommentButton={handleSubmitCommentButton}
-            setShowCommentForm={setShowCommentForm}
-          />
-        </div>
-      )}
+        </div>     
     </>
   );
 };
