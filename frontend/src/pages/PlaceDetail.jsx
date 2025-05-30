@@ -9,7 +9,15 @@ import { Helmet } from "react-helmet";
 import routes from "../routes/Routes";
 import CommentsList from "../components/CommentsList";
 
-const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch, imageUrl, name,rating,reviews }) => {
+const PlaceDetail = ({
+  expendSearch,
+  setExpendSearch,
+  hasSearch,
+  imageUrl,
+  name,
+  rating,
+  reviews,
+}) => {
   imageUrl = imageUrl || "/resturant.jpg";
   rating = rating || 2.5;
   reviews = reviews || 120;
@@ -17,7 +25,6 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch, imageUrl, name,
   const [activeTab, setActiveTab] = useState("اطلاعات کلی");
   const tabs = ["اطلاعات کلی", "نظرات", "تصاویر"];
   const [showCommentForm, setShowCommentForm] = useState(false);
-
 
   const [searchParams] = useSearchParams();
   const pointId = searchParams.get("id");
@@ -180,14 +187,17 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch, imageUrl, name,
         </div>
       </div>
 
-      {activeTab === "اطلاعات کلی" && (<>
-        <PlaceInfo
-          address={pointDetails?.address}
-          weeklySchedule={pointDetails?.weeklySchedule}
-          phone={pointDetails?.phone}
-          links={pointDetails?.links}
-          handleSubmitCommentButton={handleSubmitCommentButton}/>
-      </>)}
+      {activeTab === "اطلاعات کلی" && (
+        <>
+          <PlaceInfo
+            address={pointDetails?.address}
+            weeklySchedule={pointDetails?.weeklySchedule}
+            phone={pointDetails?.phone}
+            links={pointDetails?.links}
+            handleSubmitCommentButton={handleSubmitCommentButton}
+          />
+        </>
+      )}
       {activeTab === "نظرات" && (
         <div className="flex items-center justify-center w-full h-full max-h-[412px]">
           <CommentsList
@@ -197,9 +207,7 @@ const PlaceDetail = ({ expendSearch, setExpendSearch, hasSearch, imageUrl, name,
           />
         </div>
       )}
-      {activeTab === "تصاویر" && (<></>)}
-
-
+      {activeTab === "تصاویر" && <></>}
     </div>
   );
 };

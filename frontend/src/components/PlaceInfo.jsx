@@ -68,128 +68,124 @@ const PlaceInfoContainer = ({
 
   return (
     <>
-        <div className="flex-col items-center justify-center overflow-y-auto  ">
-          {/* Section 4: Icons */}
-          <div className="flex justify-around py-4 px-10 border-b border-gray-300">
-            <img
-              src="/direction.svg"
-              alt="route"
-              className="w-10 h-10 cursor-pointer"
-            />
-            <img
-              src="/save.svg"
-              alt="save"
-              className="w-10 h-10 cursor-pointer"
-            />
-            <img
-              src="/call.svg"
-              alt="call"
-              className="w-10 h-10 cursor-pointer"
-              onClick={() => setIsCallOpen(true)}
-            />
-            {isCallOpen && (
-              <PhoneCall phone={phone} onClose={() => setIsCallOpen(false)} />
-            )}
-            <img
-              src="/share.svg"
-              alt="share"
-              className="w-10 h-10 cursor-pointer"
-              onClick={() => setIsShareOpen(true)}
-            />
-          </div>
-          {isShareOpen && (
-            <SharePopup
-              shareUrl={shareURL}
-              placeName={name}
-              placeAddress={address}
-              onClose={() => setIsShareOpen(false)}
-            />
+      <div className="flex-col items-center justify-center overflow-y-auto  ">
+        {/* Section 4: Icons */}
+        <div className="flex justify-around py-4 px-10 border-b border-gray-300">
+          <img
+            src="/direction.svg"
+            alt="route"
+            className="w-10 h-10 cursor-pointer"
+          />
+          <img
+            src="/save.svg"
+            alt="save"
+            className="w-10 h-10 cursor-pointer"
+          />
+          <img
+            src="/call.svg"
+            alt="call"
+            className="w-10 h-10 cursor-pointer"
+            onClick={() => setIsCallOpen(true)}
+          />
+          {isCallOpen && (
+            <PhoneCall phone={phone} onClose={() => setIsCallOpen(false)} />
           )}
+          <img
+            src="/share.svg"
+            alt="share"
+            className="w-10 h-10 cursor-pointer"
+            onClick={() => setIsShareOpen(true)}
+          />
+        </div>
+        {isShareOpen && (
+          <SharePopup
+            shareUrl={shareURL}
+            placeName={name}
+            placeAddress={address}
+            onClose={() => setIsShareOpen(false)}
+          />
+        )}
 
-          {/* Section 5: Address, Time, Phone, Links */}
-          <div className="p-4 border-b border-gray-300 text-xs">
-            <div className="flex">
+        {/* Section 5: Address, Time, Phone, Links */}
+        <div className="p-4 border-b border-gray-300 text-xs">
+          <div className="flex">
+            <img src="/Map Point.svg" alt="location" className="w-5 h-5 m-2" />
+            <p className="text-xs text-gray-600 mt-2">{address}</p>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div
+              className="text-gray-600 flex items-center cursor-pointer"
+              onClick={() => setIsTimeExpanded(!isTimeExpanded)}
+            >
               <img
-                src="/Map Point.svg"
-                alt="location"
+                src="/Clock Circle.svg"
+                alt="clock"
                 className="w-5 h-5 m-2"
               />
-              <p className="text-xs text-gray-600 mt-2">{address}</p>
+              {isTimeExpanded
+                ? `${isOpen ? "باز" : "بسته"}`
+                : `${isOpen ? "باز" : "بسته"} - ${todayName}: ${todayHours}`}
             </div>
 
-            <div className="flex justify-between items-center">
-              <div
-                className="text-gray-600 flex items-center cursor-pointer"
+            <div className="flex items-center">
+              <img
+                src="/Round Alt Arrow Down.svg"
+                alt="toggle"
+                className={`w-5 h-5 m-2 transform transition-transform cursor-pointer ${
+                  isTimeExpanded ? "rotate-0" : "rotate-180"
+                }`}
                 onClick={() => setIsTimeExpanded(!isTimeExpanded)}
-              >
-                <img
-                  src="/Clock Circle.svg"
-                  alt="clock"
-                  className="w-5 h-5 m-2"
-                />
-                {isTimeExpanded
-                  ? `${isOpen ? "باز" : "بسته"}`
-                  : `${isOpen ? "باز" : "بسته"} - ${todayName}: ${todayHours}`}
-              </div>
-
-              <div className="flex items-center">
-                <img
-                  src="/Round Alt Arrow Down.svg"
-                  alt="toggle"
-                  className={`w-5 h-5 m-2 transform transition-transform cursor-pointer ${
-                    isTimeExpanded ? "rotate-0" : "rotate-180"
-                  }`}
-                  onClick={() => setIsTimeExpanded(!isTimeExpanded)}
-                />
-                <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
-              </div>
-            </div>
-
-            <div
-              className={`overflow-hidden transition-all duration-500 ${
-                isTimeExpanded ? "max-h-[500px]" : "max-h-0"
-              }`}
-            >
-              <div className="mr-7 ml-4 text-xs text-gray-600">
-                {renderWeeklySchedule()}
-              </div>
-            </div>
-
-            <div className="flex justify-between items-center">
-              <div className="flex">
-                <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
-                <p className="text-gray-600 mt-2">{phone}</p>
-              </div>
-              <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="flex">
-                <img src="/Link.svg" alt="link" className="w-5 h-5 m-2" />
-                <p className="text-gray-600 mt-2">
-                  <a href={links} className="font-thin text-blue-500">
-                    {links}
-                  </a>
-                </p>
-              </div>
+              />
               <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
             </div>
           </div>
 
-          {/* Section 6: Comment Button */}
-          <div className="flex flex-col justify-center items-center gap-4 p-4">
-            <p className="text-sm text-gray-600">
-              نظر خود را با ما به اشتراک بگذارید
-            </p>
-            <button
-              className="w-[100px] py-1 bg-white border border-purple-500
+          <div
+            className={`overflow-hidden transition-all duration-500 ${
+              isTimeExpanded ? "max-h-[500px]" : "max-h-0"
+            }`}
+          >
+            <div className="mr-7 ml-4 text-xs text-gray-600">
+              {renderWeeklySchedule()}
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div className="flex">
+              <img src="/Phone.svg" alt="phone" className="w-5 h-5 m-2" />
+              <p className="text-gray-600 mt-2">{phone}</p>
+            </div>
+            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex">
+              <img src="/Link.svg" alt="link" className="w-5 h-5 m-2" />
+              <p className="text-gray-600 mt-2">
+                <a href={links} className="font-thin text-blue-500">
+                  {links}
+                </a>
+              </p>
+            </div>
+            <img src="/Add Square.svg" alt="link" className="w-5 h-5 m-2" />
+          </div>
+        </div>
+
+        {/* Section 6: Comment Button */}
+        <div className="flex flex-col justify-center items-center gap-4 p-4">
+          <p className="text-sm text-gray-600">
+            نظر خود را با ما به اشتراک بگذارید
+          </p>
+          <button
+            className="w-[100px] py-1 bg-white border border-purple-500
                                      text-purple-500 text-sm rounded-lg 
                                       focus:outline-none focus:border-purple-500 hover:border-purple-500"
-              onClick={handleSubmitCommentButton}
-            >
-              ثبت نظر
-            </button>
-          </div>
-        </div>     
+            onClick={handleSubmitCommentButton}
+          >
+            ثبت نظر
+          </button>
+        </div>
+      </div>
     </>
   );
 };
