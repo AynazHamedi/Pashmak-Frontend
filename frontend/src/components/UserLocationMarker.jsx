@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
-import { addMarkerToMap, createUserLocationMarker } from "../utils/customMapElements";
+import {
+  addMarkerToMap,
+  createUserLocationMarker,
+} from "../utils/customMapElements";
 
 const UserLocationMarker = ({ map, userLocation }) => {
   const userMarkerRef = useRef(null);
@@ -26,7 +29,6 @@ const UserLocationMarker = ({ map, userLocation }) => {
     //   .addTo(map);
     const markerElement = createUserLocationMarker();
     const marker = addMarkerToMap(map, [longitude, latitude], markerElement);
-
 
     userMarkerRef.current = marker;
 

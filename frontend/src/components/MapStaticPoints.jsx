@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { useNavigate } from "react-router-dom";
-import { addMarkerToMap, createDefaultMarker } from "../utils/customMapElements";
+import {
+  addMarkerToMap,
+  createDefaultMarker,
+} from "../utils/customMapElements";
 
 const MapMarkers = ({ map, staticPoints }) => {
   const navigate = useNavigate();
@@ -15,9 +18,13 @@ const MapMarkers = ({ map, staticPoints }) => {
       // const marker = new maplibregl.Marker()
       //   .setLngLat([point.longitude, point.latitude])
       //   .addTo(map);
-      
+
       const markerElement = createDefaultMarker();
-      const marker = addMarkerToMap(map, [point.longitude, point.latitude], markerElement);
+      const marker = addMarkerToMap(
+        map,
+        [point.longitude, point.latitude],
+        markerElement,
+      );
 
       marker.getElement().addEventListener("click", () => {
         navigate(

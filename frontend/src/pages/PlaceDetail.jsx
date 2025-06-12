@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { memo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import PlaceInfo from "../components/PlaceInfo";
@@ -9,6 +9,7 @@ import StarRating from "../components/StarRating";
 import { Helmet } from "react-helmet";
 import routes from "../routes/Routes";
 import CommentsList from "../components/CommentsList";
+import PlaceImages from "../components/PlaceImages";
 
 const PlaceDetail = ({
   expendSearch,
@@ -30,6 +31,13 @@ const PlaceDetail = ({
   const pointId = searchParams.get("id");
   const navigate = useNavigate();
   const setPreviousRoute = usePrevRouteStore((state) => state.setPreviousRoute);
+
+  useLayoutEffect(() => {
+    const section = document.getElementById(`section-${activeTab}`);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [activeTab]);
 
   const {
     mutate: getPointDetails,
@@ -55,9 +63,9 @@ const PlaceDetail = ({
           if (tab !== "نظرات") {
             setShowCommentForm(false);
           }
-          document.getElementById(`section-${index}`).scrollIntoView({
-            behavior: "smooth",
-          });
+          // document.getElementById(`section-${index}`)?.scrollIntoView({
+          //   behavior: "smooth",
+          // });
         }}
       >
         {tab}
@@ -234,7 +242,16 @@ const PlaceDetail = ({
           />
         </div>
       )}
-      {activeTab === "تصاویر" && <></>}
+      {activeTab === "تصاویر" && (
+        <div className="flex items-center justify-center w-full h-full max-h-[412px]">
+          <PlaceImages
+            pointId={pointId}
+            onImageUpload={(image) => {
+              console.log("New image uploaded:", image);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

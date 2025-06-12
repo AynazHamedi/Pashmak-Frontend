@@ -82,14 +82,13 @@ export default function PromptBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSearching]);
 
-  
   useEffect(() => {
     if (resetSearch) {
-      setInputPrompt("")
-      setIsExpanded(false)
-      setIsSearching(false)
+      setInputPrompt("");
+      setIsExpanded(false);
+      setIsSearching(false);
     }
-  }, )
+  });
 
   return (
     <>

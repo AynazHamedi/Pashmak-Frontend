@@ -15,12 +15,14 @@ const apiClient = axios.create({
 
 export default apiClient;
 
-const postRequest = async ({ url, data, queryParams }) => {
+const postRequest = async ({ url, data, queryParams, headers }) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const fullUrl = queryString ? `${url}?${queryString}` : url;
   // console.log("Sending request to:", fullUrl, "with data:", data); // Debugging
   try {
-    const response = await apiClient.post(fullUrl, data);
+    const response = await apiClient.post(fullUrl, data, {
+      headers: headers || {},
+    });
     // console.log("Request succeeded:", response.data); // Debugging
     return response.data;
   } catch (error) {

@@ -6,7 +6,7 @@ import Login from "./Login";
 import ChangePassword from "./ChangePassword";
 import routes from "../routes/Routes";
 import { useState, useEffect, useRef } from "react";
-import Routing from "./Routing"; 
+import Routing from "./Routing";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -33,16 +33,13 @@ const MainLayout = () => {
     }
   }, [location.pathname]);
 
+  const dir = effectivePath.includes(routes.dir);
 
-  const dir = effectivePath.includes(routes.dir); 
-
-  
   useEffect(() => {
     if (search) {
       setHasSearch(true);
     }
   }, [search]);
-
 
   return (
     <>
@@ -74,7 +71,7 @@ const MainLayout = () => {
       )}
 
       {dir && <Routing />}
-      
+
       <Outlet />
     </>
   );

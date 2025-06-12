@@ -6,9 +6,9 @@ const useFocusedInputStore = create((set) => ({
 }));
 
 const usePrevRouteStore = create((set) => ({
-  previousRoute: null, 
-  setPreviousRoute: (route) => set({ previousRoute: route }), 
-  clearPreviousRoute: () => set({ previousRoute: null }), 
+  previousRoute: null,
+  setPreviousRoute: (route) => set({ previousRoute: route }),
+  clearPreviousRoute: () => set({ previousRoute: null }),
 }));
 
 export { useFocusedInputStore, usePrevRouteStore };

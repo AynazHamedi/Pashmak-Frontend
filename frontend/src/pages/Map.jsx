@@ -84,7 +84,6 @@ const Map = ({
     );
   };
 
-
   // useEffect(() => {
   //   if (resetSearch) {
   //     // Do something when ResetSearch becomes true
@@ -129,10 +128,12 @@ const Map = ({
         setUserLocation={setUserLocation}
         userLocation={userLocation}
       />
-      
+
       <MapView
         userLocation={userLocation}
-        staticPoints={!resetSearch && searchOutput ? searchOutput.places : undefined}
+        staticPoints={
+          !resetSearch && searchOutput ? searchOutput.places : undefined
+        }
         onPointClick={handlePointClick}
       />
     </div>

@@ -6,7 +6,12 @@ import SearchResults from "../components/SearchResults";
 import routes from "../routes/Routes";
 import useIsMobile from "../hooks/useIsMobile";
 
-const SearchLocation = ({ setResetSearch, setExpendSearch, expendSearch, searchResult }) => {
+const SearchLocation = ({
+  setResetSearch,
+  setExpendSearch,
+  expendSearch,
+  searchResult,
+}) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -22,7 +27,7 @@ const SearchLocation = ({ setResetSearch, setExpendSearch, expendSearch, searchR
       <button
         onClick={toggleSearchPanel}
         className={`absolute shadow-md w-9 h-9 top-12 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[13] hover:border-0
-          ${isMobile? expendSearch? "right-[calc(100vw-36px)] shadow-lg rotate-0" : "right-[20px] rotate-180" : expendSearch ? "right-[480px] rotate-0" : "right-[100px] rotate-180"}`}
+          ${isMobile ? (expendSearch ? "right-[calc(100vw-36px)] shadow-lg rotate-0" : "right-[20px] rotate-180") : expendSearch ? "right-[480px] rotate-0" : "right-[100px] rotate-180"}`}
         aria-label="Collapse search results"
       >
         <img
@@ -35,7 +40,7 @@ const SearchLocation = ({ setResetSearch, setExpendSearch, expendSearch, searchR
       <button
         onClick={closeSearchPanel}
         className={`absolute shadow-md w-9 h-9 top-2 transition-all duration-300 ease-in-out p-2 rounded-full hover:bg-gray-100 bg-white z-[13] hover:border-0
-          ${isMobile? expendSearch? "right-[calc(100vw-36px)] shadow-lg" : "right-[20px]" : expendSearch ? "sm:right-[480px]" : "sm:right-[100px]"}`}
+          ${isMobile ? (expendSearch ? "right-[calc(100vw-36px)] shadow-lg" : "right-[20px]") : expendSearch ? "sm:right-[480px]" : "sm:right-[100px]"}`}
         aria-label="Collapse search results"
       >
         <img src="/Close_round.svg" alt="Close_round" className="scale-125" />
