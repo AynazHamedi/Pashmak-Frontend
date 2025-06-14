@@ -143,7 +143,7 @@ export default function PlaceImages({ pointId, onImageUpload }) {
               <span>در حال آپلود تصویر...</span>
             </div>
           </div>,
-          document.getElementById("portal-root")
+          document.getElementById("portal-root"),
         )}
 
       {/* Upload Button */}

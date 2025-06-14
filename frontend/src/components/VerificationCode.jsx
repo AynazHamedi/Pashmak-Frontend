@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import routes from "../routes/Routes";
 import { useEmail, useLoginStep } from "../stores/login";
+import { toPersianDigits } from "../utils/persianNumber";
 
 const VerificationCode = ({
   handleVerificationSuccess,
@@ -135,9 +136,9 @@ const VerificationCode = ({
             />
           ))}
         </div>
-        <p className="text-center text-muted text-lg">
-          {Math.floor(timeLeft / 60)}:
-          {(timeLeft % 60).toString().padStart(2, "0")}
+        <p className="text-center text-muted text-lg timer-display">
+          {toPersianDigits(Math.floor(timeLeft / 60))}:
+          {toPersianDigits((timeLeft % 60).toString().padStart(2, "0"))}
         </p>
         <button
           type="button"

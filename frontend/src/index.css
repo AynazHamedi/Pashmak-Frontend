@@ -35,6 +35,7 @@
   --promptbar-height: 218px;
   --sidebar-and-prompt-bar: 270px;
   --sidebar-width-expanded: 380px;
+  font-feature-settings: "ss01";
 }
 
 a {
@@ -52,6 +53,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-feature-settings: "ss01";
 }
 
 h1 {
