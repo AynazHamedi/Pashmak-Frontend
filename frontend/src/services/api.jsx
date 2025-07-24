@@ -72,3 +72,22 @@ export const usePatchRequest = () => {
     mutationFn: patchRequest,
   });
 };
+
+const deleteRequest = async ({ url, queryParams }) => {
+  const queryString = new URLSearchParams(queryParams).toString();
+  const fullUrl = queryString ? `${url}?${queryString}` : url;
+  try {
+    const response = await apiClient.delete(fullUrl);
+    return response.data;
+  } catch (error) {
+    console.error("DELETE request failed:", error);
+    throw error;
+  }
+};
+
+export const useDeleteRequest = () => {
+  return useMutation({
+    mutationFn: deleteRequest,
+  });
+};
+

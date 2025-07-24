@@ -2,11 +2,12 @@ import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUserLogin } from "../stores/login";
 import routes from "../routes/Routes";
+import { isUserLoggedIn } from "../utils/auth"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { userLogin } = useUserLogin();
+  
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -25,7 +26,7 @@ const Sidebar = () => {
   };
 
   const handleProfileClick = () => {
-    if (userLogin) {
+    if (isUserLoggedIn()) {
       navigate("/profile");
     } else {
       setShowLoginPopup(true);
@@ -94,7 +95,7 @@ const Sidebar = () => {
           to="/profile"
           end
           onClick={(e) => {
-            if (!userLogin) {
+            if (!isUserLoggedIn()) {
               e.preventDefault(); // stop navigation
               setShowLoginPopup(true);
             }
@@ -121,7 +122,7 @@ const Sidebar = () => {
           to="/bookmarks"
           end
           onClick={(e) => {
-            if (!userLogin) {
+            if (!isUserLoggedIn()) {
               e.preventDefault(); // stop navigation
               setShowLoginPopup(true);
             }
@@ -142,10 +143,10 @@ const Sidebar = () => {
           </div>
         </NavLink>
         <NavLink
-          to="/search-history"
+          to="/map/search-history"
           end
           onClick={(e) => {
-            if (!userLogin) {
+            if (!isUserLoggedIn()) {
               e.preventDefault(); // stop navigation
               setShowLoginPopup(true);
             }

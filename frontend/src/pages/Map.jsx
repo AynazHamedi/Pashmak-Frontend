@@ -14,7 +14,10 @@ const Map = ({
   resetSearch,
   setResetSearch,
   expendSearch,
+  setExpendSearch,
   setSearchResult,
+  searchWithHistory,
+  setSearchWithHistory,
 }) => {
   const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
@@ -104,6 +107,9 @@ const Map = ({
           fetchSuggestedTags={handleFetchSuggestedTags}
           submitData={handleSubmitData}
           expendSearch={expendSearch}
+          setExpendSearch={setExpendSearch}
+          searchWithHistory={searchWithHistory}
+          setSearchWithHistory={setSearchWithHistory}
         />
       )}
 

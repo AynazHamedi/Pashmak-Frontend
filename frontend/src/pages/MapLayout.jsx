@@ -6,7 +6,8 @@ import Login from "./Login";
 import ChangePassword from "./ChangePassword";
 import routes from "../routes/Routes";
 import { useState, useEffect, useRef } from "react";
-import Routing from "./Routing";
+import Routing from "./Routing"; 
+import SearchHistory from "./SearchHistory";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -20,6 +21,12 @@ const MainLayout = () => {
   const [hasSearch, setHasSearch] = useState(false);
   const [resetSearch, setResetSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const history = location.pathname.includes(routes.searchHistory);
+  const [searchWithHistory, setSearchWithHistory] = useState({
+    isSearching: false,     // boolean
+    query: "",          // string
+  });
+
 
   useEffect(() => {
     const isLogin = location.pathname.includes(routes.login);
@@ -47,13 +54,16 @@ const MainLayout = () => {
         resetSearch={resetSearch}
         setResetSearch={setResetSearch}
         expendSearch={expendSearch}
+        setExpendSearch={setExpendSearch}
         setSearchResult={setSearchResult}
+        searchWithHistory={searchWithHistory}
+        setSearchWithHistory={setSearchWithHistory}
       />
       {login && <Login />}
 
       {changePassword && <ChangePassword />}
 
-      {((place && expendSearch) || search) && searchResult && (
+      {((place && expendSearch) || search) && (searchResult && searchResult.length > 0) && (
         <SearchLocation
           setResetSearch={setResetSearch}
           setExpendSearch={setExpendSearch}
@@ -72,6 +82,13 @@ const MainLayout = () => {
 
       {dir && <Routing />}
 
+      {history && (
+        <SearchHistory 
+          searchWithHistory={searchWithHistory}
+          setSearchWithHistory={setSearchWithHistory}
+        />
+      )}
+      
       <Outlet />
     </>
   );

@@ -24,6 +24,7 @@ function AppRouter() {
         <Route path={routes.dir} element={<></>} />
         <Route path={routes.login} element={<></>} />
         <Route path={routes.changePassword} element={<></>} />
+        <Route path={routes.searchHistory} element={<></>} />
       </Route>
       {role === "admin" && (
         <Route path={routes.admin} element={<AdminLayout />}>

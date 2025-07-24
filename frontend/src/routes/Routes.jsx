@@ -11,6 +11,7 @@ const routes = {
   admin_comments: "comments",
   notfound: "*",
   dir: "/map/dir",
+  searchHistory: "/map/search-history",
 };
 
 export default routes;
