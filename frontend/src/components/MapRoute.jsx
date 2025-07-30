@@ -11,7 +11,7 @@ import {
 } from "../utils/customMapElements";
 import { toast } from "react-toastify";
 
-const MapRoute = ({ map, mapReady }) => {
+const MapRoute = ({ map, mapReady, onLoadingChange }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { focusedInput, setFocusedInput } = useFocusedInputStore();
 
@@ -21,6 +21,12 @@ const MapRoute = ({ map, mapReady }) => {
     isPending: isLoading,
     error,
   } = useGetRequest(); // Use the same structure as in PlaceDetail
+
+  useEffect(() => {
+    if (onLoadingChange) {
+      onLoadingChange(isLoading);
+    }
+  }, [isLoading, onLoadingChange]);
 
   const removeMarker = (markerRef) => {
     if (markerRef.current) {
