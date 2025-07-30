@@ -11,6 +11,11 @@ const useEmail = create((set) => ({
   setEmail: (newEmail) => set({ email: newEmail }),
 }));
 
+const useLoginStartPath = create((set) => ({
+  loginStartPath: "",
+  setLoginStartPath: (newLoginStartPath) => set({ loginStartPath: newLoginStartPath }),
+}));
+
 const useUserLogin = create((set) => ({
   userLogin: Cookies.get("pashmak_authentication"),
   setUserLogin: (newUserLogin) => set({ userLogin: newUserLogin }),
@@ -21,4 +26,4 @@ const useRole = create((set) => ({
   setRole: (newRole) => set({ role: newRole }),
 }));
 
-export { useLoginStep, useEmail, useUserLogin, useRole };
+export { useLoginStep, useEmail, useUserLogin, useRole, useLoginStartPath };

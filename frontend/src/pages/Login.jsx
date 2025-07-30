@@ -6,7 +6,7 @@ import VerificationCode from "../components/VerificationCode";
 import PasswordLogin from "../components/PasswordLogin";
 import Signup from "../components/Signup";
 import routes from "../routes/Routes";
-import { useLoginStep, useEmail, useUserLogin, useRole } from "../stores/login";
+import { useLoginStep, useEmail, useUserLogin, useRole, useLoginStartPath } from "../stores/login";
 import { toast } from "react-toastify";
 import { usePostRequest, usePatchRequest } from "../services/api";
 import { Helmet } from "react-helmet";
@@ -19,6 +19,7 @@ const Login = () => {
   const { userLogin, setUserLogin } = useUserLogin();
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
+  const { loginStartPath } = useLoginStartPath();
 
   const { mutate: submitEmail, isLoading: isSubmitting } = usePostRequest();
 
@@ -46,6 +47,18 @@ const Login = () => {
     );
   };
 
+  const handleCloseLoginFlow = () => {
+    setStep("email");
+    setEmail("");
+    setUserExists(false);
+    navigate(loginStartPath);
+  }
+
+  const handleCloseSignUp = () => {
+    setStep("email");
+    navigate(loginStartPath);
+  }
+
   const { mutate: submitOTP, isLoading: isSubmittingOTP } = usePostRequest();
 
   const handleVerificationSuccess = (otp) => {
@@ -54,10 +67,10 @@ const Login = () => {
       {
         onSuccess: (response) => {
           const roleFromServer = response?.role;
+          setUserLogin(true);
+          setRole(roleFromServer);
+          Cookies.set("role", roleFromServer);
           if (userExists) {
-            setUserLogin(true);
-            setRole(roleFromServer);
-            Cookies.set("role", roleFromServer);
             toast.success("خوش آمدید.");
             if (roleFromServer === "admin") {
               navigate(routes.admin);
@@ -65,6 +78,7 @@ const Login = () => {
               navigate(routes.map);
             }
           } else {
+            toast.success("خوش آمدید. میتوانید پروفایل خود را تکمیل کنید.");
             setStep("signup");
             toast.success("ورود موفقیت آمیز بود. پروفایل خود را تکمیل کنید.");
           }
@@ -146,7 +160,7 @@ const Login = () => {
   };
 
   return (
-    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-black/20 backdrop-blur-sm">
+    <div className="fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-purple-50 bg-opacity-40 backdrop-blur-sm">
       <Helmet>
         <title>ورود</title>
       </Helmet>
@@ -156,6 +170,7 @@ const Login = () => {
           <EmailInput
             handleEmailSubmit={handleEmailSubmit}
             isLoading={isSubmitting}
+            handleCloseLoginFlow={handleCloseLoginFlow}
           />
         )}
         {step === "verification" && (
@@ -164,15 +179,25 @@ const Login = () => {
             handleEmailSubmit={handleEmailSubmit}
             userExists={userExists}
             isLoading={isSubmittingOTP}
-          />
-        )}
+            handleCloseLoginFlow={handleCloseLoginFlow}
+            />
+          )}
         {step === "password" && (
           <PasswordLogin
             handlePasswordLoginSuccess={handlePasswordLoginSuccess}
             setUserExists={setUserExists}
+            isLoading={isSubmittingPassword}
+            handleCloseLoginFlow={handleCloseLoginFlow}
+            handleEmailSubmit={handleEmailSubmit}
           />
         )}
-        {step === "signup" && <Signup handleSignup={handleSignup} />}
+        {step === "signup" && (
+          <Signup 
+          handleSignup={handleSignup} 
+          isLoading={isSubmittingInfo}
+          handleCloseSignUp={handleCloseSignUp}
+          />
+        )}
       </PageTransition>
     </div>
   );

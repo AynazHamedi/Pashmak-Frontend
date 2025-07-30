@@ -5,12 +5,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#2563EB",
+        primary: "#4361EE",
         secondary: "#374151",
         accent: "#FACC15",
         background: "#F3F4F6",
         text: "#1F2937",
-        muted: "#9CA3AF",
+        muted: "#94A3B8",
         accept: "#22C55E",
         reject: "#EF4444",
       },

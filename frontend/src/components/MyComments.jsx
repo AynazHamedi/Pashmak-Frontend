@@ -63,7 +63,7 @@ export default function MyComments({ user }) {
              overflow-y-auto scroll-smooth scrollbar-hide overflow-x-hidden relative z-[11]"
     >
       <div
-        className="overflow-y-auto w-[60%] h-[100%] min-w-[500px] lg:w-[35%] lg:h-[75%] border-[1px] lg:shadow-lg lg:shadow-gray-300 lg:rounded-3xl rounded-3xl p-4  bg-white scrollbar-hide"
+        className="overflow-y-auto w-full h-[100%] sm:w-[60%] sm:h-auto lg:w-[60%] lg:h-[75%] border-[1px] lg:shadow-lg lg:shadow-gray-300 lg:rounded-3xl rounded-3xl p-4  bg-white scrollbar-hide"
         dir="rtl"
       >
         {isLoading ? (
