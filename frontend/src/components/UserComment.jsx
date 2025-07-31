@@ -97,7 +97,7 @@ const UserComment = ({ comment }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
-            src={user.avatar_url}
+            src={user.avatar_url.length>0? user.avatar_url : "/userProfilePlaceHolder.png"}
             alt="avatar"
             className="rounded-full w-11 h-11 border-2 border-gray-200"
           />

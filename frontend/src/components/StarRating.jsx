@@ -2,7 +2,8 @@ import React from "react";
 
 const StarRating = ({ rating, reviews }) => {
   // Render stars for the rating
-  const lessAccurateRating = parseFloat(rating.toFixed(1));
+  const lessAccurateRating = rating;
+  // const lessAccurateRating = parseFloat(rating.toFixed(1));
   const renderStars = () => {
     return [...Array(5)].map((_, index) => {
       const isFullStar = index < Math.floor(lessAccurateRating);
