@@ -130,7 +130,7 @@ const UserComment = ({ comment, setShowReportPopup, setReportedComment }) => {
         <div className="text-center mt-2">
           <button
             onClick={toggleExpand}
-            className="text-indigo-600 text-sm hover:underline"
+            className="text-indigo-600 text-sm hover:underline bg-white"
           >
             {isExpanded ? "کمتر" : "بیشتر"}
           </button>

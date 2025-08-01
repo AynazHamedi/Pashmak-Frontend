@@ -164,7 +164,7 @@ export default function ProfileNavbar(props) {
                   <span className="bg-purple-500 h-[40px] w-[10px] pr-0 rounded-lg  p-0 mr-2"></span>
                 )}
               </div>
-              <div className="flex w-full items-center justify-end p-1 mt-3 pr-0">
+              {/* <div className="flex w-full items-center justify-end p-1 mt-3 pr-0">
                 <button
                   className={`bg-white mt-2 p-1 pb-3 pr-3 w-full
               text-right hover:border-white focus:outline-none 
@@ -183,7 +183,7 @@ export default function ProfileNavbar(props) {
                 {props.state === "favoriteLocations" && (
                   <span className="bg-purple-500 h-[40px] w-[10px] pr-0 rounded-lg  p-0 mr-2"></span>
                 )}
-              </div>
+              </div> */}
             </div>
             <button
               onClick={handleLogout}
