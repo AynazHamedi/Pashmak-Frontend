@@ -59,7 +59,7 @@ export default function BookmarkGroupDetails({
     tempArr = [
       ...tempArr,
       {
-        osm_id: place.PlaceID,
+        id: place.PlaceID,
         latitude: parseFloat(place.Latitude),
         longitude: parseFloat(place.Longitude),
       },

@@ -17,7 +17,7 @@ const MapMarkers = ({ map, staticPoints }) => {
 
       marker.getElement().addEventListener("click", () => {
         navigate(
-          `/map/place?id=${point.osm_id}&lat=${point.latitude}&lng=${point.longitude}`,
+          `/map/place?id=${point.id}&lat=${point.latitude}&lng=${point.longitude}`,
         );
       });
 

@@ -13,7 +13,7 @@ const SearchResults = ({ setExpendSearch, expendSearch, searchResult }) => {
   const handlePlaceSelect = (item) => {
     setExpendSearch(true);
     navigate(
-      `/map/place?id=${item.osm_id}&lat=${item.latitude}&lng=${item.longitude}`,
+      `/map/place?id=${item.id}&lat=${item.latitude}&lng=${item.longitude}`,
     );
   };
 
@@ -67,7 +67,7 @@ const SearchResults = ({ setExpendSearch, expendSearch, searchResult }) => {
                   {searchResult &&
                     searchResult.map((item) => (
                       <div
-                        key={item.osm_id}
+                        key={item.id}
                         className="border-b border-gray-200 last:border-b-0 cursor-pointer rounded-xl hover:bg-gray-100 transition-colors py-4"
                         onClick={() => handlePlaceSelect(item)}
                       >

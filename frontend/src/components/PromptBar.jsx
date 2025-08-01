@@ -138,7 +138,7 @@ export default function PromptBar({
       // setIsExpanded(true);
       setResetSearch(false);
       setExpendSearch(false);
-      submitData({ input: searchWithHistory.query, tags: selectedTags });
+      submitData({ input: searchWithHistory.query, tags: selectedTags,agentic: searchMode==="llm"? true : false  });
       console.log(expendSearch);
       // console.log("in prompt")
       // console.log(searchWithHistory.isSearching)
@@ -150,7 +150,7 @@ export default function PromptBar({
     if (isSearchDisabled) return;
     setPromptBarState("right");
     setResetSearch(false);
-    submitData({ input: inputPrompt, tags: selectedTags });
+    submitData({ input: inputPrompt, tags: selectedTags,agentic: searchMode==="llm"? true : false  });
   };
 
   const addTag = (tag) => {
