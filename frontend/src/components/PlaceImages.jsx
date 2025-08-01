@@ -99,7 +99,7 @@ export default function PlaceImages({ pointId, onImageUpload }) {
   };
 
   return (
-    <div className="p-4 bg-white">
+    <div className="flex flex-col min-h-full p-4 bg-white">
       {/* Images Grid */}
       {loading ? (
         <div className="flex justify-center items-center py-8">
@@ -147,7 +147,7 @@ export default function PlaceImages({ pointId, onImageUpload }) {
         )}
 
       {/* Upload Button */}
-      <div className="mb-6 text-center">
+      <div className="mb-6 text-center shrink-0">
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}

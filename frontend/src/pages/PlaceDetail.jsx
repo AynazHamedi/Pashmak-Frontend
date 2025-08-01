@@ -270,7 +270,7 @@ const PlaceDetail = ({
           </div>
         )}
         {activeTab === "تصاویر" && (
-          <div className="flex items-center justify-center w-full h-full max-h-[412px]">
+          <div className="flex-1 overflow-y-auto">
             <PlaceImages
               pointId={pointId}
               onImageUpload={(image) => {
