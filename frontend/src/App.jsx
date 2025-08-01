@@ -14,10 +14,12 @@ function App() {
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
-        rtl={false}
+        rtl={true}
         pauseOnFocusLoss={false}
         draggable
         pauseOnHover
+        // toastClassName="custom-toast"
+        // bodyClassName="custom-toast-body"
       />
     </div>
   );

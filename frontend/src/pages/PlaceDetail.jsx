@@ -170,7 +170,7 @@ const PlaceDetail = ({
       )}
       <div
         dir="rtl"
-        className={` z-[13] absolute scrollbar-hide bg-white shadow-md scroll-smooth overflow-x-hidden font-sans rounded-xl 
+        className={` z-[35] absolute scrollbar-hide bg-white shadow-md scroll-smooth overflow-x-hidden font-sans rounded-xl 
         ${
           expendSearch && !isMobile
             ? "right-[485px] h-[80%] w-[350px] bottom-8"
