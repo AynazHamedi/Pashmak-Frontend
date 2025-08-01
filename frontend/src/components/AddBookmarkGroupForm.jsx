@@ -81,10 +81,11 @@ export default function AddBookmarkGroupForm({
               type="submit"
               disabled={groupName.length === 0}
               onClick={(e) => SubmitCreateGroupFrom(e, groupName)}
-              className="bg-purple-600 text-white text-base
+              className=" text-white text-base
                                     py-2 px-4 leading-6
-                                    disabled:bg-slate-300 transition-colors duration-150
-                                    rounded-full border-none"
+                                    rounded-full border-none bg-primary disabled:opacity-30
+                                     transition-all duration-150
+                                    "
             >
               ساخت گروه
             </button>

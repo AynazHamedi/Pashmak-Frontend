@@ -17,31 +17,40 @@ const BookmarksPanel = ({ setState, setSelectedGroup }) => {
   const [loading, setLoading] = useState(true);
   const [showNewGroupForm, setShowNewGroupForm] = useState(false);
   const [refetchGroups, setRefetchGroups] = useState(false);
+  const [deleteNonEmptyGroupWarning, setDeleteNonEmptyGroupWarning] =
+    useState(false);
+  const [candidateGroupToDelete, setCandidateGroupToDelete] = useState(null);
 
   //api3 delete kardane ye goooroohe location ha
   const { mutate: deleteGroup, isPending: isdeletingGroups } =
     useDeleteRequest();
 
-  const handleTrashClick = (e, deletedItemId) => {
+  const handleTrashClick = (e, deletedItem) => {
     e.stopPropagation();
-    deleteGroup(
-      {
-        url: `/profiles/me/saved/label/${deletedItemId}`,
-      },
-      {
-        onSuccess: () => {
-          toast.success("گروه با موفقیت حذف شد.");
-          setRefetchGroups(!refetchGroups);
+    if (deletedItem.saved_locations_count > 0 && !deleteNonEmptyGroupWarning) {
+      setCandidateGroupToDelete(deletedItem);
+      setDeleteNonEmptyGroupWarning(true);
+    } else {
+      deleteGroup(
+        {
+          url: `/profiles/me/saved/label/${deletedItem.id}`,
         },
-        onError: (error) => {
-          if (error.response?.data?.message) {
-            toast.error(error.response.data.message);
-          } else {
-            toast.error("گروه حذف نشد. مجددا تلاش کنید.");
-          }
+        {
+          onSuccess: () => {
+            toast.success("گروه با موفقیت حذف شد.");
+            setRefetchGroups(!refetchGroups);
+            setDeleteNonEmptyGroupWarning(false);
+          },
+          onError: (error) => {
+            if (error.response?.data?.message) {
+              toast.error(error.response.data.message);
+            } else {
+              toast.error("گروه حذف نشد. مجددا تلاش کنید.");
+            }
+          },
         },
-      },
-    );
+      );
+    }
   };
 
   // api1 gereftane group haye location
@@ -96,6 +105,37 @@ const BookmarksPanel = ({ setState, setSelectedGroup }) => {
         />
       )}
 
+      {deleteNonEmptyGroupWarning && (
+        <div className="z-[999] fixed inset-0 flex items-center justify-center bg-black/50">
+          <div className="relative bg-white px-8 py-5 rounded-lg shadow-lg w-1/3 max-w-[400px] min-w-[200px] space-y-2">
+            <div className="">
+              <label className="text-text ">
+                این گروه خالی نیست. آیا از حذف آن اطمینان دارید؟
+              </label>
+            </div>
+
+            <div className="flex justify-center gap-2 w-full ">
+              <button
+                type="button"
+                className="px-4 py-2 bg-gray-400 rounded-md border-none
+                            hover:bg-gray-500 transition-colors duration-200"
+                onClick={() => setDeleteNonEmptyGroupWarning(false)}
+              >
+                انصراف
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 text-white rounded-md border-none
+                          bg-primary/90 hover:bg-primary transition-all duration-200"
+                onClick={(e) => handleTrashClick(e, candidateGroupToDelete)}
+              >
+                بله
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Panel header */}
       <div className="flex-shrink-0 pt-2 px-4 relative shadow-md mb-2">
         <div className="flex justify-center items-center w-full">
@@ -105,7 +145,7 @@ const BookmarksPanel = ({ setState, setSelectedGroup }) => {
           <div className="flex justify-end items-center w-[50%]">
             <button
               className="bg-white border-none focus:outline-none 
-                              text-purple-600 p-2 float-left
+                              text-primary p-2 float-left
                               text-base"
               onClick={handleMakeNewGroupClick}
             >
@@ -133,7 +173,7 @@ const BookmarksPanel = ({ setState, setSelectedGroup }) => {
                 {/*Group Icon */}
                 <div className="flex items-center pl-4 pr-2 justify-center">
                   {item.id > 0 && (
-                    <PinCircle size={24} color="#7C3AED" iconStyle="Outline" />
+                    <PinCircle size={24} color="#4361EE" iconStyle="Outline" />
                   )}
                 </div>
                 {/*group name */}
@@ -155,9 +195,9 @@ const BookmarksPanel = ({ setState, setSelectedGroup }) => {
                                   bg-transparent border-hidden focus:outline-none 
                                   absolute left-0
                                   p-0 w-[40px] aspect-square z-20"
-                    onClick={(e) => handleTrashClick(e, item.id)}
+                    onClick={(e) => handleTrashClick(e, item)}
                   >
-                    <Trash2Icon className="w-6 h-6 text-purple-600 hover:text-red-500 transition-colors" />
+                    <Trash2Icon className="w-6 h-6 text-primary hover:text-red-500 transition-colors" />
                   </button>
                 )}
               </div>

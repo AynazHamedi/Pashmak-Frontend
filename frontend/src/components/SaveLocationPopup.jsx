@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { XCircle, CheckIcon } from "lucide-react";
-import { Heart, Flag, SuitcaseLines, PinCircle } from "solar-icon-set";
+import { PinCircle } from "solar-icon-set";
 import {
   useGetRequest,
   usePatchRequest,
@@ -203,13 +203,10 @@ export default function SaveLocationPopup({ setSaveLocationPopup }) {
                     className="flex flex-row items-center justify-right
                                     p-2 gap-y-4 float-left"
                   >
-                    {/* {group.id === 1 && <Heart size={20} color="#7C3AED" iconStyle="Outline" />}
-                        {group.id === 2 && <Flag size={20} color="#7C3AED" iconStyle="Outline" />}
-                        {group.id === 3 && <SuitcaseLines size={20} color="#7C3AED" iconStyle="Outline" />} */}
                     {group.id > 0 && (
                       <PinCircle
                         size={20}
-                        color="#7C3AED"
+                        color="#4361EE"
                         iconStyle="Outline"
                       />
                     )}
@@ -234,7 +231,7 @@ export default function SaveLocationPopup({ setSaveLocationPopup }) {
         <div className="flex justify-center items-center w-full">
           <button
             className="bg-white border-none focus:outline-none 
-                                text-purple-600 p-2 float-left
+                                text-primary/90 hover:text-primary p-2 float-left
                                 text-base"
             onClick={handleMakeNewGroupClick}
           >

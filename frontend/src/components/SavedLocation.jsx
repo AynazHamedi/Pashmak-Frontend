@@ -13,6 +13,8 @@ export default function SavedLocation({
   savedLocation,
   reRenderer,
   setReRenderer,
+  setNumberOfLocations,
+  numberOfLocations,
 }) {
   const [showNoteBar, setShowNoteBar] = useState(
     savedLocation.UserNote.length > 0,
@@ -29,9 +31,11 @@ export default function SavedLocation({
   );
 
   const handlePlaceSelect = (item) => {
-    navigate(
-      `/map/place?&id=${item.id}&lat=${item.latitude}&lng=${item.longitude}`,
-    );
+    if (item.id) {
+      navigate(
+        `/map/place?&id=${item.id}&lat=${item.latitude}&lng=${item.longitude}`,
+      );
+    }
   };
 
   //api to get the "real place" from id place id lng lat of props.place
@@ -114,6 +118,7 @@ export default function SavedLocation({
         onSuccess: (data) => {
           setReRenderer(!reRenderer);
           toast.success("حذف مکان موفقیت آمیز بود");
+          setNumberOfLocations(numberOfLocations - 1);
         },
         onError: (error) => {
           if (error.response?.data?.message) {
@@ -204,9 +209,11 @@ export default function SavedLocation({
               >
                 {nameToShow}
               </span>
-              <div className="flex items-center mt-2 h-5 pb-2">
-                <StarRating rating={place.rating} reviews={0} />
-              </div>
+              {savedLocation.PlaceID && (
+                <div className="flex items-center mt-2 h-5 pb-2">
+                  <StarRating rating={place.rating} reviews={0} />
+                </div>
+              )}
               <span className="text-gray-500 text-sm mt-1 line-clamp-1 max-w-[300px]">
                 {place.address}
               </span>

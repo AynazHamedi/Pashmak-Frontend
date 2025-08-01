@@ -13,6 +13,9 @@ export default function BookmarkGroupDetails({
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const [reRenderer, setReRenderer] = useState();
+  const [numberOfLocations, setNumberOfLocations] = useState(
+    selectedGroup.saved_locations_count,
+  );
 
   const [results, setResults] = useState([]);
 
@@ -80,7 +83,7 @@ export default function BookmarkGroupDetails({
         <div className="flex flex-col items-start justify-start">
           <span className="text-gray-900 text-2xl">{selectedGroup.name}</span>
           <span className="text-gray-400 text-md ">
-            {selectedGroup.saved_locations_count} مکان
+            {numberOfLocations} مکان
           </span>
         </div>
 
@@ -92,7 +95,7 @@ export default function BookmarkGroupDetails({
         >
           <button
             className="bg-white border-none focus:outline-none 
-                              text-purple-600 p-1 hover:text-purple-800
+                              text-primary/80 p-1 hover:text-primary
                                 text-md
                                 "
             onClick={handleCloseGroupButton}
@@ -107,17 +110,17 @@ export default function BookmarkGroupDetails({
           className="flex w-full items-center justify-center
                       p-4"
         >
-          <span className="text-gray-900">مکانی وجود ندارد.</span>
+          <span className="text-gray-400">مکانی وجود ندارد.</span>
         </div>
       ) : (
         /* saved locations in this group */
-        <div className="h-full overflow-y-scroll overflow-x-hidden scrollbar-hide">
+        <div className="flex-1 ">
           {isGettingResult ? (
             <div
               className="flex items-center justify-center
                       p-4 w-full "
             >
-              <span className="text-gray-900">در حال دریافت اطلاعات ...</span>
+              <span className="text-gray-400">در حال دریافت اطلاعات ...</span>
             </div>
           ) : (
             results.map((item, index) => (
@@ -126,6 +129,8 @@ export default function BookmarkGroupDetails({
                   savedLocation={item}
                   reRenderer={reRenderer}
                   setReRenderer={setReRenderer}
+                  setNumberOfLocations={setNumberOfLocations}
+                  numberOfLocations={numberOfLocations}
                 />
               </div>
             ))
