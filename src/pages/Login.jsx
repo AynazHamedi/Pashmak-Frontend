@@ -31,11 +31,11 @@ const Login = () => {
 
   const handleEmailSubmit = (email) => {
     // --- تغییر جدید برای ارکپچا ---
-    //const captchaToken = window.arcaptcha?.getArcToken();
+   // const captchaToken = window.arcaptcha?.getArcToken();
     
     //if (!captchaToken && step === "email") {
       //toast.error("لطفاً تیک کپچا را بزنید");
-     // return;
+      //return;
     //}
     // ----------------------------
 
@@ -46,8 +46,7 @@ const Login = () => {
       { 
         url: "/auth/otp/send", 
         data: { 
-          email
-         // "arcaptcha-token": captchaToken // ارسال توکن به بک‌اِند
+          email,//          "arcaptcha-token": captchaToken // ارسال توکن به بک‌اِند
         } 
       },
       {
@@ -59,7 +58,7 @@ const Login = () => {
         onError: (error) => {
           console.error("Error checking email:", error);
           // اگر کپچا اشتباه باشد، ویجت را ریست می‌کنیم
-          //window.arcaptcha?.reset();
+          window.arcaptcha?.reset();
           
           if (error.response?.data?.message) {
             toast.error(error.response.data.message);
@@ -197,7 +196,7 @@ const Login = () => {
               isLoading={isSubmitting}
               handleCloseLoginFlow={handleCloseLoginFlow}
             />
-            {/* اضافه شدن ویجت کپچا زیر ورودی ایمیل */}
+
           </div>
         )}
         {step === "verification" && (
